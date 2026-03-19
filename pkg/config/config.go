@@ -171,3 +171,70 @@ func WithClusterDomainSuffix(suffix string) Option {
 		c.ClusterDomainSuffix = suffix
 	}
 }
+
+// Getter methods for HigressServiceConfig
+
+// GetKubeConfigPath returns the kubeconfig path.
+func (c *HigressServiceConfig) GetKubeConfigPath() string {
+	return c.KubeConfigPath
+}
+
+// GetKubeConfigContent returns the kubeconfig content.
+func (c *HigressServiceConfig) GetKubeConfigContent() string {
+	return c.KubeConfigContent
+}
+
+// GetControllerNamespace returns the controller namespace.
+func (c *HigressServiceConfig) GetControllerNamespace() string {
+	return c.ControllerNamespace
+}
+
+// GetControllerWatchedNamespace returns the controller watched namespace.
+func (c *HigressServiceConfig) GetControllerWatchedNamespace() string {
+	return c.ControllerWatchedNamespace
+}
+
+// GetControllerWatchedIngressClassName returns the controller watched ingress class name.
+func (c *HigressServiceConfig) GetControllerWatchedIngressClassName() string {
+	return c.ControllerWatchedIngressClassName
+}
+
+// GetControllerServiceName returns the controller service name.
+func (c *HigressServiceConfig) GetControllerServiceName() string {
+	return c.ControllerServiceName
+}
+
+// GetControllerServiceHost returns the controller service host.
+func (c *HigressServiceConfig) GetControllerServiceHost() string {
+	return c.ControllerServiceHost
+}
+
+// GetControllerServicePort returns the controller service port.
+func (c *HigressServiceConfig) GetControllerServicePort() int {
+	return c.ControllerServicePort
+}
+
+// GetControllerJwtPolicy returns the controller JWT policy.
+func (c *HigressServiceConfig) GetControllerJwtPolicy() string {
+	return c.ControllerJwtPolicy
+}
+
+// GetControllerAccessToken returns the controller access token.
+func (c *HigressServiceConfig) GetControllerAccessToken() string {
+	return c.ControllerAccessToken
+}
+
+// GetWasmPluginServiceConfig returns the WASM plugin service config.
+func (c *HigressServiceConfig) GetWasmPluginServiceConfig() *WasmPluginServiceConfig {
+	return c.WasmPluginServiceConfig
+}
+
+// GetServiceListSupportRegistry returns whether service list supports registry.
+func (c *HigressServiceConfig) GetServiceListSupportRegistry() bool {
+	return c.ServiceListSupportRegistry
+}
+
+// GetClusterDomainSuffix returns the cluster domain suffix.
+func (c *HigressServiceConfig) GetClusterDomainSuffix() string {
+	return c.ClusterDomainSuffix
+}

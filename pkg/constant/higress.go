@@ -30,8 +30,27 @@ const (
 
 // Controller JWT policy constants.
 const (
-	JwtPolicyFirstParty = "first-party-jwt"
-	JwtPolicyThirdParty = "third-party-jwt"
+	JwtPolicyFirstParty    = "first-party-jwt"
+	JwtPolicyThirdParty    = "third-party-jwt"
+	JwtPolicyFirstPartyJwt = "first-party-jwt"
+)
+
+// Resource definer constants.
+const (
+	LabelResourceDefinerKey   = "higress.io/resource-definer"
+	LabelResourceDefinerValue = "higress-console"
+)
+
+// WasmPlugin label keys.
+const (
+	LabelWasmPluginNameKey    = "higress.io/wasm-plugin-name"
+	LabelWasmPluginVersionKey = "higress.io/wasm-plugin-version"
+	LabelWasmPluginBuiltInKey = "higress.io/wasm-plugin-built-in"
+)
+
+// Kubernetes namespace constants.
+const (
+	KubeSystemNamespace = "kube-system"
 )
 
 // Common key constants.
