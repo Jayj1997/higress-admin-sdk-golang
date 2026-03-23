@@ -3,22 +3,26 @@ package mcp
 
 // V1McpBridge represents an MCP Bridge CRD
 type V1McpBridge struct {
-	// APIGroup is the API group
-	APIGroup string `json:"apiGroup,omitempty"`
-	// APIVersion is the API version
-	APIVersion string `json:"apiVersion,omitempty"`
-	// Kind is the resource kind
-	Kind string `json:"kind,omitempty"`
+	// TypeMeta contains standard Kubernetes type metadata
+	TypeMeta `json:",inline"`
 	// Metadata contains object metadata
 	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
 	// Spec contains the McpBridge specification
 	Spec *V1McpBridgeSpec `json:"spec,omitempty"`
 }
 
+// TypeMeta contains standard Kubernetes type metadata
+type TypeMeta struct {
+	// APIVersion is the API version (format: group/version)
+	APIVersion string `json:"apiVersion,omitempty"`
+	// Kind is the resource kind
+	Kind string `json:"kind,omitempty"`
+}
+
 // Constants for McpBridge
 const (
 	McpBridgeAPIGroup   = "networking.higress.io"
-	McpBridgeAPIVersion = "v1"
+	McpBridgeAPIVersion = "networking.higress.io/v1"
 	McpBridgeKind       = "McpBridge"
 	McpBridgePlural     = "mcpbridges"
 )
@@ -26,11 +30,12 @@ const (
 // NewV1McpBridge creates a new McpBridge
 func NewV1McpBridge() *V1McpBridge {
 	return &V1McpBridge{
-		APIGroup:   McpBridgeAPIGroup,
-		APIVersion: McpBridgeAPIVersion,
-		Kind:       McpBridgeKind,
-		Metadata:   &V1ObjectMeta{},
-		Spec:       &V1McpBridgeSpec{},
+		TypeMeta: TypeMeta{
+			APIVersion: McpBridgeAPIVersion,
+			Kind:       McpBridgeKind,
+		},
+		Metadata: &V1ObjectMeta{},
+		Spec:     &V1McpBridgeSpec{},
 	}
 }
 

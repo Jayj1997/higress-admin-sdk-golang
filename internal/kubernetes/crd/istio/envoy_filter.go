@@ -4,22 +4,26 @@ package istio
 // V1alpha3EnvoyFilter represents an Istio EnvoyFilter CRD
 // +k8s:deepcopy-gen=true
 type V1alpha3EnvoyFilter struct {
-	// APIGroup is the API group for EnvoyFilter
-	APIGroup string `json:"apiGroup,omitempty"`
-	// APIVersion is the API version
-	APIVersion string `json:"apiVersion,omitempty"`
-	// Kind is the resource kind
-	Kind string `json:"kind,omitempty"`
+	// TypeMeta contains standard Kubernetes type metadata
+	TypeMeta `json:",inline"`
 	// Metadata contains object metadata
 	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
 	// Spec contains the EnvoyFilter specification
 	Spec *V1alpha3EnvoyFilterSpec `json:"spec,omitempty"`
 }
 
+// TypeMeta contains standard Kubernetes type metadata
+type TypeMeta struct {
+	// APIVersion is the API version (format: group/version)
+	APIVersion string `json:"apiVersion,omitempty"`
+	// Kind is the resource kind
+	Kind string `json:"kind,omitempty"`
+}
+
 // Constants for EnvoyFilter
 const (
 	EnvoyFilterAPIGroup   = "networking.istio.io"
-	EnvoyFilterAPIVersion = "v1alpha3"
+	EnvoyFilterAPIVersion = "networking.istio.io/v1alpha3"
 	EnvoyFilterKind       = "EnvoyFilter"
 	EnvoyFilterPlural     = "envoyfilters"
 )
@@ -27,11 +31,12 @@ const (
 // NewV1alpha3EnvoyFilter creates a new EnvoyFilter
 func NewV1alpha3EnvoyFilter() *V1alpha3EnvoyFilter {
 	return &V1alpha3EnvoyFilter{
-		APIGroup:   EnvoyFilterAPIGroup,
-		APIVersion: EnvoyFilterAPIVersion,
-		Kind:       EnvoyFilterKind,
-		Metadata:   &V1ObjectMeta{},
-		Spec:       &V1alpha3EnvoyFilterSpec{},
+		TypeMeta: TypeMeta{
+			APIVersion: EnvoyFilterAPIVersion,
+			Kind:       EnvoyFilterKind,
+		},
+		Metadata: &V1ObjectMeta{},
+		Spec:     &V1alpha3EnvoyFilterSpec{},
 	}
 }
 
