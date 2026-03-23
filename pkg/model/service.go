@@ -9,8 +9,14 @@ type Service struct {
 	// Namespace is the service namespace.
 	Namespace string `json:"namespace,omitempty"`
 
+	// Port is the service port (for single port services).
+	Port int `json:"port,omitempty"`
+
 	// Ports are the service ports.
 	Ports []ServicePort `json:"ports,omitempty"`
+
+	// Endpoints are the service endpoints.
+	Endpoints []string `json:"endpoints,omitempty"`
 
 	// Labels are the service labels.
 	Labels map[string]string `json:"labels,omitempty"`

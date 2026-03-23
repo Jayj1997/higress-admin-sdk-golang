@@ -89,3 +89,12 @@ const (
 const (
 	AnnotationKeyConfig = AnnotationKeyPrefix + "config"
 )
+
+// Domain constants.
+const (
+	// DefaultDomain is the default domain name.
+	DefaultDomain = "higress-default-domain"
+
+	// DomainKeyPrefix is the prefix for domain ConfigMap names.
+	DomainKeyPrefix = "domain-"
+)

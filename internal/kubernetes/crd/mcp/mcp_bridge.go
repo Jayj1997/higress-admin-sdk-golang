@@ -21,11 +21,11 @@ type V1McpBridge struct {
 
 // Constants for McpBridge
 const (
-	McpBridgeAPIGroup    = "networking.higress.io"
-	McpBridgeAPIVersion  = "networking.higress.io/v1"
-	McpBridgeVersion     = "v1" // Version only, for GVR
-	McpBridgeKind        = "McpBridge"
-	McpBridgePlural      = "mcpbridges"
+	McpBridgeAPIGroup   = "networking.higress.io"
+	McpBridgeAPIVersion = "networking.higress.io/v1"
+	McpBridgeVersion    = "v1" // Version only, for GVR
+	McpBridgeKind       = "McpBridge"
+	McpBridgePlural     = "mcpbridges"
 )
 
 // NewV1McpBridge creates a new McpBridge
@@ -62,6 +62,8 @@ type V1ObjectMeta struct {
 type V1McpBridgeSpec struct {
 	// Registries is the list of registry configurations
 	Registries []*V1RegistryConfig `json:"registries,omitempty"`
+	// Proxies is the list of proxy configurations
+	Proxies []*V1ProxyConfig `json:"proxies,omitempty"`
 }
 
 // V1RegistryConfig represents a registry configuration
