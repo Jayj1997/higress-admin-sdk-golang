@@ -3,20 +3,14 @@ package mcp
 
 // V1McpBridge represents an MCP Bridge CRD
 type V1McpBridge struct {
-	// TypeMeta contains standard Kubernetes type metadata
-	TypeMeta `json:",inline"`
-	// Metadata contains object metadata
-	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
-	// Spec contains the McpBridge specification
-	Spec *V1McpBridgeSpec `json:"spec,omitempty"`
-}
-
-// TypeMeta contains standard Kubernetes type metadata
-type TypeMeta struct {
 	// APIVersion is the API version (format: group/version)
 	APIVersion string `json:"apiVersion,omitempty"`
 	// Kind is the resource kind
 	Kind string `json:"kind,omitempty"`
+	// Metadata contains object metadata
+	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
+	// Spec contains the McpBridge specification
+	Spec *V1McpBridgeSpec `json:"spec,omitempty"`
 }
 
 // Constants for McpBridge
@@ -31,12 +25,10 @@ const (
 // NewV1McpBridge creates a new McpBridge
 func NewV1McpBridge() *V1McpBridge {
 	return &V1McpBridge{
-		TypeMeta: TypeMeta{
-			APIVersion: McpBridgeAPIVersion,
-			Kind:       McpBridgeKind,
-		},
-		Metadata: &V1ObjectMeta{},
-		Spec:     &V1McpBridgeSpec{},
+		APIVersion: McpBridgeAPIVersion,
+		Kind:       McpBridgeKind,
+		Metadata:   &V1ObjectMeta{},
+		Spec:       &V1McpBridgeSpec{},
 	}
 }
 

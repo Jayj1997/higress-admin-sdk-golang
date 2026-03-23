@@ -3,20 +3,14 @@ package wasm
 
 // V1alpha1WasmPlugin represents a WASM Plugin CRD
 type V1alpha1WasmPlugin struct {
-	// TypeMeta contains standard Kubernetes type metadata
-	TypeMeta `json:",inline"`
-	// Metadata contains object metadata
-	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
-	// Spec contains the WasmPlugin specification
-	Spec *V1alpha1WasmPluginSpec `json:"spec,omitempty"`
-}
-
-// TypeMeta contains standard Kubernetes type metadata
-type TypeMeta struct {
 	// APIVersion is the API version (format: group/version)
 	APIVersion string `json:"apiVersion,omitempty"`
 	// Kind is the resource kind
 	Kind string `json:"kind,omitempty"`
+	// Metadata contains object metadata
+	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
+	// Spec contains the WasmPlugin specification
+	Spec *V1alpha1WasmPluginSpec `json:"spec,omitempty"`
 }
 
 // Constants for WasmPlugin
@@ -31,12 +25,10 @@ const (
 // NewV1alpha1WasmPlugin creates a new WasmPlugin
 func NewV1alpha1WasmPlugin() *V1alpha1WasmPlugin {
 	return &V1alpha1WasmPlugin{
-		TypeMeta: TypeMeta{
-			APIVersion: WasmPluginAPIVersion,
-			Kind:       WasmPluginKind,
-		},
-		Metadata: &V1ObjectMeta{},
-		Spec:     &V1alpha1WasmPluginSpec{},
+		APIVersion: WasmPluginAPIVersion,
+		Kind:       WasmPluginKind,
+		Metadata:   &V1ObjectMeta{},
+		Spec:       &V1alpha1WasmPluginSpec{},
 	}
 }
 
