@@ -1,7 +1,14 @@
 // Package istio contains Istio CRD types for Kubernetes
 package istio
 
-// V1alpha3EnvoyFilter represents an Istio EnvoyFilter CRD
+// V1alpha3EnvoyFilter represents an Istio EnvoyFilter CRD.
+//
+// Note: APIVersion and Kind are defined directly in this struct (not via embedded TypeMeta)
+// because jsoniter library doesn't properly support the `json:",inline"` tag. When using
+// jsoniter to marshal a struct with embedded TypeMeta, the apiVersion and kind fields are
+// nested under a "TypeMeta" key instead of being at the root level, which causes Kubernetes
+// API server to reject the request with "Object 'Kind' is missing" error.
+//
 // +k8s:deepcopy-gen=true
 type V1alpha3EnvoyFilter struct {
 	// APIVersion is the API version (format: group/version)

@@ -1,7 +1,13 @@
 // Package wasm contains WASM Plugin CRD types for Kubernetes
 package wasm
 
-// V1alpha1WasmPlugin represents a WASM Plugin CRD
+// V1alpha1WasmPlugin represents a WASM Plugin CRD.
+//
+// Note: APIVersion and Kind are defined directly in this struct (not via embedded TypeMeta)
+// because jsoniter library doesn't properly support the `json:",inline"` tag. When using
+// jsoniter to marshal a struct with embedded TypeMeta, the apiVersion and kind fields are
+// nested under a "TypeMeta" key instead of being at the root level, which causes Kubernetes
+// API server to reject the request with "Object 'Kind' is missing" error.
 type V1alpha1WasmPlugin struct {
 	// APIVersion is the API version (format: group/version)
 	APIVersion string `json:"apiVersion,omitempty"`
@@ -15,11 +21,11 @@ type V1alpha1WasmPlugin struct {
 
 // Constants for WasmPlugin
 const (
-	WasmPluginAPIGroup    = "extensions.higress.io"
-	WasmPluginAPIVersion  = "extensions.higress.io/v1alpha1"
-	WasmPluginVersion     = "v1alpha1" // Version only, for GVR
-	WasmPluginKind        = "WasmPlugin"
-	WasmPluginPlural      = "wasmplugins"
+	WasmPluginAPIGroup   = "extensions.higress.io"
+	WasmPluginAPIVersion = "extensions.higress.io/v1alpha1"
+	WasmPluginVersion    = "v1alpha1" // Version only, for GVR
+	WasmPluginKind       = "WasmPlugin"
+	WasmPluginPlural     = "wasmplugins"
 )
 
 // NewV1alpha1WasmPlugin creates a new WasmPlugin
