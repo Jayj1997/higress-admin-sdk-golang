@@ -21,10 +21,11 @@ type TypeMeta struct {
 
 // Constants for McpBridge
 const (
-	McpBridgeAPIGroup   = "networking.higress.io"
-	McpBridgeAPIVersion = "networking.higress.io/v1"
-	McpBridgeKind       = "McpBridge"
-	McpBridgePlural     = "mcpbridges"
+	McpBridgeAPIGroup    = "networking.higress.io"
+	McpBridgeAPIVersion  = "networking.higress.io/v1"
+	McpBridgeVersion     = "v1" // Version only, for GVR
+	McpBridgeKind        = "McpBridge"
+	McpBridgePlural      = "mcpbridges"
 )
 
 // NewV1McpBridge creates a new McpBridge

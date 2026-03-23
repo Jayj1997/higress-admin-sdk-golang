@@ -24,6 +24,7 @@ type TypeMeta struct {
 const (
 	EnvoyFilterAPIGroup   = "networking.istio.io"
 	EnvoyFilterAPIVersion = "networking.istio.io/v1alpha3"
+	EnvoyFilterVersion    = "v1alpha3" // Version only, for GVR
 	EnvoyFilterKind       = "EnvoyFilter"
 	EnvoyFilterPlural     = "envoyfilters"
 )

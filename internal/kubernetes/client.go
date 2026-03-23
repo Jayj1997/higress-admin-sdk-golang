@@ -295,7 +295,7 @@ func (s *KubernetesClientService) DeleteConfigMap(ctx context.Context, name stri
 
 var wasmPluginGVR = schema.GroupVersionResource{
 	Group:    wasm.WasmPluginAPIGroup,
-	Version:  wasm.WasmPluginAPIVersion,
+	Version:  wasm.WasmPluginVersion,
 	Resource: wasm.WasmPluginPlural,
 }
 
@@ -376,7 +376,7 @@ func (s *KubernetesClientService) DeleteWasmPlugin(ctx context.Context, name str
 
 var mcpBridgeGVR = schema.GroupVersionResource{
 	Group:    mcp.McpBridgeAPIGroup,
-	Version:  mcp.McpBridgeAPIVersion,
+	Version:  mcp.McpBridgeVersion,
 	Resource: mcp.McpBridgePlural,
 }
 
@@ -446,7 +446,7 @@ func (s *KubernetesClientService) DeleteMcpBridge(ctx context.Context, name stri
 
 var envoyFilterGVR = schema.GroupVersionResource{
 	Group:    istio.EnvoyFilterAPIGroup,
-	Version:  istio.EnvoyFilterAPIVersion,
+	Version:  istio.EnvoyFilterVersion,
 	Resource: istio.EnvoyFilterPlural,
 }
 

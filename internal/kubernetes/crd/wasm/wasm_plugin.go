@@ -21,10 +21,11 @@ type TypeMeta struct {
 
 // Constants for WasmPlugin
 const (
-	WasmPluginAPIGroup   = "extensions.higress.io"
-	WasmPluginAPIVersion = "extensions.higress.io/v1alpha1"
-	WasmPluginKind       = "WasmPlugin"
-	WasmPluginPlural     = "wasmplugins"
+	WasmPluginAPIGroup    = "extensions.higress.io"
+	WasmPluginAPIVersion  = "extensions.higress.io/v1alpha1"
+	WasmPluginVersion     = "v1alpha1" // Version only, for GVR
+	WasmPluginKind        = "WasmPlugin"
+	WasmPluginPlural      = "wasmplugins"
 )
 
 // NewV1alpha1WasmPlugin creates a new WasmPlugin
