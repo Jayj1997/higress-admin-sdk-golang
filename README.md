@@ -2,31 +2,31 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/Jayj1997/higress-admin-sdk-golang.svg)](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
 
-English | [简体中文](README_CN.md)
+[English](README_EN.md) | 简体中文
 
-A Go SDK for managing Higress gateway configurations, including domains, routes, services, certificates, and WASM plugins.
+用于管理 Higress 网关配置的 Go SDK，包括域名、路由、服务、证书和 WASM 插件。
 
-> **Note**: This project is ported from the official higress-admin-sdk by higress-group. For more details, see [higress-console](https://github.com/higress-group/higress-console) and [higress](https://github.com/alibaba/higress).
+> **注意**：该项目移植自 higress-group 官方的 higress-admin-sdk，详情见：[higress-console](https://github.com/higress-group/higress-console) 和 [higress](https://github.com/alibaba/higress)。
 
-## Features
+## 功能特性
 
-- **Domain Management**: Create, update, delete, and list gateway domains
-- **Route Management**: Configure routing rules with path matching, header control, and more
-- **Service Management**: List and manage backend services
-- **Service Source Management**: Configure service discovery sources (Nacos, DNS, static, etc.)
-- **TLS Certificate Management**: Manage SSL/TLS certificates for HTTPS
-- **WASM Plugin Management**: Configure and manage WASM plugins
-- **AI Route Management**: Configure AI/LLM routing rules
-- **Consumer Management**: Manage API consumers and credentials
-- **MCP Server Management**: Configure MCP server instances
+- **域名管理**：创建、更新、删除和列出网关域名
+- **路由管理**：配置路由规则，包括路径匹配、请求头控制等
+- **服务管理**：列出和管理后端服务
+- **服务来源管理**：配置服务发现来源（Nacos、DNS、静态等）
+- **TLS 证书管理**：管理 HTTPS 的 SSL/TLS 证书
+- **WASM 插件管理**：配置和管理 WASM 插件
+- **AI 路由管理**：配置 AI/LLM 路由规则
+- **消费者管理**：管理 API 消费者和凭证
+- **MCP 服务器管理**：配置 MCP 服务器实例
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/Jayj1997/higress-admin-sdk-golang
 ```
 
-## Quick Start
+## 快速开始
 
 ```go
 package main
@@ -41,79 +41,79 @@ import (
 )
 
 func main() {
-    // Create configuration
+    // 创建配置
     cfg := config.NewHigressServiceConfig(
         config.WithKubeConfigPath("~/.kube/config"),
         config.WithControllerNamespace("higress-system"),
     )
 
-    // Create service provider
+    // 创建服务提供者
     provider, err := sdk.NewHigressServiceProvider(cfg)
     if err != nil {
-        log.Fatalf("Failed to create provider: %v", err)
+        log.Fatalf("创建服务提供者失败: %v", err)
     }
 
-    // List all domains
+    // 列出所有域名
     domains, err := provider.DomainService().List(context.Background())
     if err != nil {
-        log.Fatalf("Failed to list domains: %v", err)
+        log.Fatalf("列出域名失败: %v", err)
     }
 
-    fmt.Printf("Found %d domains\n", len(domains))
+    fmt.Printf("找到 %d 个域名\n", len(domains))
     for _, domain := range domains {
         fmt.Printf("- %s\n", domain.Name)
     }
 }
 ```
 
-## Configuration Options
+## 配置选项
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `WithKubeConfigPath(path)` | Path to kubeconfig file | - |
-| `WithKubeConfigContent(content)` | Kubeconfig content as string | - |
-| `WithControllerNamespace(ns)` | Higress controller namespace | `higress-system` |
-| `WithControllerServiceHost(host)` | Controller service host | - |
-| `WithControllerServicePort(port)` | Controller service port | `15014` |
+| 选项 | 描述 | 默认值 |
+|------|------|--------|
+| `WithKubeConfigPath(path)` | kubeconfig 文件路径 | - |
+| `WithKubeConfigContent(content)` | kubeconfig 内容字符串 | - |
+| `WithControllerNamespace(ns)` | Higress 控制器命名空间 | `higress-system` |
+| `WithControllerServiceHost(host)` | 控制器服务主机 | - |
+| `WithControllerServicePort(port)` | 控制器服务端口 | `15014` |
 
-## API Reference
+## API 参考
 
-### Domain Service
+### 域名服务
 
 ```go
-// List all domains
+// 列出所有域名
 domains, err := provider.DomainService().List(ctx)
 
-// Get a specific domain
+// 获取特定域名
 domain, err := provider.DomainService().Get(ctx, "example.com")
 
-// Add a new domain
+// 添加新域名
 newDomain := &model.Domain{
     Name:        "example.com",
     EnableHTTPS: model.EnableHTTPSOn,
 }
 domain, err := provider.DomainService().Add(ctx, newDomain)
 
-// Update a domain
+// 更新域名
 domain.EnableHTTPS = model.EnableHTTPSForce
 domain, err := provider.DomainService().Update(ctx, domain)
 
-// Delete a domain
+// 删除域名
 err := provider.DomainService().Delete(ctx, "example.com")
 ```
 
-### Route Service
+### 路由服务
 
 ```go
-// List routes with pagination
+// 分页列出路由
 routes, err := provider.RouteService().List(ctx, &model.RoutePageQuery{
     DomainName: "example.com",
 })
 
-// Get a specific route
+// 获取特定路由
 route, err := provider.RouteService().Get(ctx, "my-route")
 
-// Add a new route
+// 添加新路由
 newRoute := &model.Route{
     Name:    "my-route",
     Path:    "/api/v1",
@@ -122,74 +122,78 @@ newRoute := &model.Route{
 route, err := provider.RouteService().Add(ctx, newRoute)
 ```
 
-## Documentation
+## 文档
 
-- [API Documentation](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
-- [Migration Guide from Java SDK](docs/migration.md)
-- [Examples](examples/)
+- [API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
+- [Java SDK 迁移指南](docs/migration.md)
+- [示例代码](examples/)
 
-## Development
+## 开发
 
-### Prerequisites
+### 环境要求
 
 - Go 1.21+
 - Make
 
-### Running Tests
+### 运行测试
 
 ```bash
-# Run unit tests (no K8s cluster required)
+# 运行单元测试（无需 K8s 集群）
 make test
 
-# Run unit tests (alias for make test)
+# 运行单元测试（make test 的别名）
 make test-unit
 
-# Run integration tests (requires K8s cluster)
+# 运行集成测试（需要 K8s 集群）
 make test-integration
 
-# Run all tests including integration tests (requires K8s cluster)
+# 运行所有测试，包括集成测试（需要 K8s 集群）
 make test-all
 
-# Run tests with coverage
+# 运行测试并生成覆盖率报告
 make test-coverage
 
-# Run linting
+# 运行代码检查
 make lint
 ```
 
-#### Test Types
+#### 测试类型
 
-| Command | Description | K8s Required |
-|---------|-------------|--------------|
-| `make test` | Unit tests only | No |
-| `make test-unit` | Same as `make test` | No |
-| `make test-integration` | Integration tests only | Yes |
-| `make test-all` | All tests (unit + integration) | Yes |
+| 命令 | 描述 | 需要 K8s |
+|------|------|----------|
+| `make test` | 仅单元测试 | 否 |
+| `make test-unit` | 同 `make test` | 否 |
+| `make test-integration` | 仅集成测试 | 是 |
+| `make test-all` | 所有测试（单元 + 集成） | 是 |
 
-### Project Structure
+### 项目结构
 
 ```
 higress-admin-sdk-golang/
-├── api/v1/              # API definitions
+├── api/v1/              # API 定义
 ├── pkg/
-│   ├── client/          # Client implementation
-│   ├── config/          # Configuration
-│   ├── model/           # Data models
-│   ├── service/         # Service implementations
-│   ├── constant/        # Constants
-│   └── errors/          # Error definitions
+│   ├── client/          # 客户端实现
+│   ├── config/          # 配置
+│   ├── model/           # 数据模型
+│   ├── service/         # 服务实现
+│   ├── constant/        # 常量定义
+│   └── errors/          # 错误定义
 ├── internal/
-│   ├── kubernetes/      # Kubernetes client and CRD
-│   └── util/            # Internal utilities
-├── examples/            # Example code
-└── test/                # Integration tests
+│   ├── kubernetes/      # Kubernetes 客户端和 CRD
+│   └── util/            # 内部工具
+├── examples/            # 示例代码
+└── test/                # 集成测试
 ```
 
-## Contributing
+## 贡献
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+欢迎贡献！请阅读[贡献指南](CONTRIBUTING.md)了解详情。
 
-## Related Projects
+## 许可证
 
-- [Higress](https://github.com/alibaba/higress) - Cloud-native API Gateway
-- [Higress Console](https://github.com/higress-group/higress-console) - console for Higress
+本项目采用 Apache License 2.0 许可证 - 详情见 [LICENSE](LICENSE) 文件。
+
+## 相关项目
+
+- [Higress](https://github.com/alibaba/higress) - 云原生 API 网关
+- [Higress Console](https://github.com/higress-group/higress-console) - Higress 控制台
