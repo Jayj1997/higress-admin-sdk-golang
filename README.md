@@ -138,8 +138,17 @@ route, err := provider.RouteService().Add(ctx, newRoute)
 ### Running Tests
 
 ```bash
-# Run all tests
+# Run unit tests (no K8s cluster required)
 make test
+
+# Run unit tests (alias for make test)
+make test-unit
+
+# Run integration tests (requires K8s cluster)
+make test-integration
+
+# Run all tests including integration tests (requires K8s cluster)
+make test-all
 
 # Run tests with coverage
 make test-coverage
@@ -147,6 +156,15 @@ make test-coverage
 # Run linting
 make lint
 ```
+
+#### Test Types
+
+| Command | Description | K8s Required |
+|---------|-------------|--------------|
+| `make test` | Unit tests only | No |
+| `make test-unit` | Same as `make test` | No |
+| `make test-integration` | Integration tests only | Yes |
+| `make test-all` | All tests (unit + integration) | Yes |
 
 ### Project Structure
 

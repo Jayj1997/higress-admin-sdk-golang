@@ -1,7 +1,7 @@
 # Higress Admin SDK Go Makefile
 # Copyright (c) 2022-2024 Alibaba Group Holding Ltd.
 
-.PHONY: build test lint clean fmt vet deps all test-coverage help
+.PHONY: build test test-unit test-integration test-all lint clean fmt vet deps all test-coverage help
 
 # Go 参数
 GOCMD=go
@@ -23,10 +23,25 @@ build:
 	@echo ">>> 构建项目..."
 	$(GOBUILD) ./...
 
-## test: 运行所有测试
+## test: 运行单元测试（不需要 K8s 集群）
 test:
-	@echo ">>> 运行测试..."
+	@echo ">>> 运行单元测试..."
 	$(GOTEST) -v -race -coverprofile=coverage.out ./...
+
+## test-unit: 运行单元测试（不需要 K8s 集群，与 test 相同）
+test-unit:
+	@echo ">>> 运行单元测试..."
+	$(GOTEST) -v -race -coverprofile=coverage.out ./...
+
+## test-integration: 运行集成测试（需要 K8s 集群）
+test-integration:
+	@echo ">>> 运行集成测试（需要 K8s 集群）..."
+	$(GOTEST) -v -race -tags=integration -coverprofile=coverage-integration.out ./...
+
+## test-all: 运行所有测试（单元测试 + 集成测试，需要 K8s 集群）
+test-all:
+	@echo ">>> 运行所有测试..."
+	$(GOTEST) -v -race -tags=integration -coverprofile=coverage-all.out ./...
 
 ## test-coverage: 生成测试覆盖率报告
 test-coverage: test
@@ -58,7 +73,7 @@ vet:
 clean:
 	@echo ">>> 清理..."
 	$(GOCLEAN)
-	rm -f coverage.out coverage.html
+	rm -f coverage.out coverage.html coverage-integration.out coverage-all.out
 
 ## deps: 安装依赖
 deps:
