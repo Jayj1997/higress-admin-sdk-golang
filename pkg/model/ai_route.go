@@ -2,6 +2,9 @@
 package model
 
 import (
+	"strings"
+
+	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
 	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model/route"
 )
 
@@ -53,22 +56,105 @@ type AiRoute struct {
 	CustomLabels map[string]string `json:"customLabels,omitempty"`
 }
 
+// Validate 验证AI路由配置
+func (r *AiRoute) Validate() error {
+	if r.Name == "" {
+		return errors.NewValidationError("name cannot be blank")
+	}
+	if len(r.Upstreams) == 0 {
+		return errors.NewValidationError("upstreams cannot be empty")
+	}
+	if r.PathPredicate != nil {
+		if err := r.PathPredicate.Validate(); err != nil {
+			return err
+		}
+		// AI路由只支持前缀匹配
+		if r.PathPredicate.MatchType != route.MatchTypePrefix {
+			return errors.NewValidationError("pathPredicate must be of type prefix")
+		}
+	}
+	for i := range r.HeaderPredicates {
+		if err := r.HeaderPredicates[i].Validate(); err != nil {
+			return err
+		}
+		if strings.EqualFold(r.HeaderPredicates[i].Key, ModelRoutingHeader) {
+			return errors.NewValidationError("headerPredicates cannot contain the model routing header")
+		}
+	}
+	for i := range r.UrlParamPredicates {
+		if err := r.UrlParamPredicates[i].Validate(); err != nil {
+			return err
+		}
+	}
+	for i := range r.Upstreams {
+		if err := r.Upstreams[i].Validate(); err != nil {
+			return err
+		}
+	}
+	// 验证权重总和
+	weightSum := 0
+	for _, upstream := range r.Upstreams {
+		weightSum += upstream.Weight
+	}
+	if weightSum != 100 {
+		return errors.NewValidationError("The sum of upstream weights must be 100")
+	}
+	if r.AuthConfig != nil {
+		if err := r.AuthConfig.Validate(); err != nil {
+			return err
+		}
+	}
+	if r.FallbackConfig != nil {
+		if err := r.FallbackConfig.Validate(); err != nil {
+			return err
+		}
+	}
+	for i := range r.ModelPredicates {
+		if err := r.ModelPredicates[i].Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // AiUpstream AI上游配置
 type AiUpstream struct {
-	// ProviderName 提供商名称
-	ProviderName string `json:"providerName,omitempty"`
+	// Provider 提供商名称
+	Provider string `json:"provider,omitempty"`
 
 	// Weight 权重
 	Weight int `json:"weight,omitempty"`
+
+	// ModelMapping 模型映射
+	ModelMapping map[string]string `json:"modelMapping,omitempty"`
+}
+
+// Validate 验证上游配置
+func (u *AiUpstream) Validate() error {
+	if u.Provider == "" {
+		return errors.NewValidationError("provider cannot be null or empty")
+	}
+	return nil
 }
 
 // AiModelPredicate AI模型谓词
 type AiModelPredicate struct {
-	// Model 模型名称
-	Model string `json:"model,omitempty"`
-
 	// MatchType 匹配类型
 	MatchType string `json:"matchType,omitempty"`
+
+	// MatchValue 匹配值
+	MatchValue string `json:"matchValue,omitempty"`
+}
+
+// Validate 验证模型谓词
+func (p *AiModelPredicate) Validate() error {
+	if p.MatchType == "" {
+		return errors.NewValidationError("matchType cannot be blank")
+	}
+	if p.MatchValue == "" {
+		return errors.NewValidationError("matchValue cannot be blank")
+	}
+	return nil
 }
 
 // AiRouteFallbackConfig AI路由降级配置
@@ -76,6 +162,40 @@ type AiRouteFallbackConfig struct {
 	// Enabled 是否启用
 	Enabled bool `json:"enabled,omitempty"`
 
-	// FallbackUpstream 降级上游
-	FallbackUpstream *AiUpstream `json:"fallbackUpstream,omitempty"`
+	// FallbackStrategy 降级策略（RANDOM/SEQUENCE）
+	FallbackStrategy string `json:"fallbackStrategy,omitempty"`
+
+	// Upstreams 降级上游列表
+	Upstreams []AiUpstream `json:"upstreams,omitempty"`
+
+	// ResponseCodes 触发降级的响应码
+	ResponseCodes []string `json:"responseCodes,omitempty"`
 }
+
+// Validate 验证降级配置
+func (c *AiRouteFallbackConfig) Validate() error {
+	if c.Enabled && len(c.Upstreams) == 0 {
+		return errors.NewValidationError("upstreams cannot be empty when fallback is enabled")
+	}
+	for i := range c.Upstreams {
+		if err := c.Upstreams[i].Validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AI路由相关常量
+const (
+	// ModelRoutingHeader 模型路由头
+	ModelRoutingHeader = "x-higress-model-routing"
+
+	// FallbackFromHeader 降级来源头
+	FallbackFromHeader = "x-higress-fallback-from"
+
+	// AiRouteFallbackStrategyRandom 随机降级策略
+	AiRouteFallbackStrategyRandom = "RANDOM"
+
+	// AiRouteFallbackStrategySequence 顺序降级策略
+	AiRouteFallbackStrategySequence = "SEQUENCE"
+)

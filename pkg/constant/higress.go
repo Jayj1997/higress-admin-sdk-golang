@@ -98,3 +98,24 @@ const (
 	// DomainKeyPrefix is the prefix for domain ConfigMap names.
 	DomainKeyPrefix = "domain-"
 )
+
+// Service source registry type constants.
+const (
+	// RegistryTypeDNS DNS注册中心类型
+	RegistryTypeDNS = "dns"
+
+	// RegistryTypeStatic 静态IP注册中心类型
+	RegistryTypeStatic = "static"
+
+	// StaticPort 静态服务端口占位符
+	StaticPort = 0
+)
+
+// LLM Provider constants.
+const (
+	// LlmServiceNamePrefix LLM服务名称前缀
+	LlmServiceNamePrefix = "llm-"
+
+	// InternalResourceNameSuffix 内部资源名称后缀
+	InternalResourceNameSuffix = ".internal"
+)

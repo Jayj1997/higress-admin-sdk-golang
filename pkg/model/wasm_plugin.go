@@ -136,6 +136,25 @@ func (i *WasmPluginInstance) Validate() error {
 	return nil
 }
 
+// HasScopedTarget checks if the instance has the specified scope and target.
+func (i *WasmPluginInstance) HasScopedTarget(scope WasmPluginInstanceScope, target string) bool {
+	// Check Targets map first
+	if i.Targets != nil {
+		if t, ok := i.Targets[scope]; ok {
+			if target == "" || t == target {
+				return true
+			}
+		}
+	}
+	// Check deprecated Scope/Target fields
+	if i.Scope == scope {
+		if target == "" || i.Target == target {
+			return true
+		}
+	}
+	return false
+}
+
 // SyncDeprecatedFields syncs deprecated fields to the new fields.
 func (i *WasmPluginInstance) SyncDeprecatedFields() {
 	// Sync scope/target to targets
