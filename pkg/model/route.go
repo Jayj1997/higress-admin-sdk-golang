@@ -112,9 +112,12 @@ type RouteAuthConfig struct {
 	// Enabled indicates whether authentication is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Consumers are the allowed consumer names.
+	// AllowedConsumers are the allowed consumer names.
 	// If empty, all consumers are allowed.
 	AllowedConsumers []string `json:"allowedConsumers,omitempty"`
+
+	// AllowedCredentialTypes are the allowed credential types.
+	AllowedCredentialTypes []string `json:"allowedCredentialTypes,omitempty"`
 }
 
 // Validate validates the RouteAuthConfig model.

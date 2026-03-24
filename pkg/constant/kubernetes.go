@@ -65,6 +65,12 @@ const (
 
 	// LabelKeyManagedBy is the managed by label key.
 	LabelKeyManagedBy = "app.kubernetes.io/managed-by"
+
+	// LabelResourceBizTypeKey is the resource business type label key.
+	LabelResourceBizTypeKey = "higress.io/resource-biz-type"
+
+	// LabelInternalKey is the internal resource label key.
+	LabelInternalKey = "higress.io/internal"
 )
 
 // Kubernetes resource names.

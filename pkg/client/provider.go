@@ -127,8 +127,8 @@ func NewHigressServiceProvider(cfg *config.HigressServiceConfig) (HigressService
 	// 13. 创建AiRouteService (Mock实现，将在里程碑8中完整实现)
 	aiRouteService := mock.NewMockAiRouteService()
 
-	// 14. 创建McpServerService (Mock实现，将在里程碑10中完整实现)
-	mcpServerService := mock.NewMockMcpServerService()
+	// 14. 创建McpServerService
+	mcpServerService := service.NewMcpServiceContextImpl(kubernetesClientService, routeService, consumerService)
 
 	return &HigressServiceProviderImpl{
 		kubernetesClientService:   kubernetesClientService,

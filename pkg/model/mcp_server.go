@@ -62,11 +62,14 @@ const (
 
 // ConsumerAuthInfo 消费者认证信息
 type ConsumerAuthInfo struct {
-	// Enabled 是否启用认证
-	Enabled bool `json:"enabled,omitempty"`
+	// Enable 是否启用认证
+	Enable bool `json:"enable,omitempty"`
 
-	// Consumers 允许的消费者列表
-	Consumers []string `json:"consumers,omitempty"`
+	// Type 凭证类型
+	Type string `json:"type,omitempty"`
+
+	// AllowedConsumers 允许的消费者列表
+	AllowedConsumers []string `json:"allowedConsumers,omitempty"`
 }
 
 // McpServerDBConfig MCP服务器数据库配置
@@ -99,6 +102,10 @@ type McpServerDirectRouteConfig struct {
 // McpServerPageQuery MCP服务器分页查询
 type McpServerPageQuery struct {
 	CommonPageQuery
+	// McpServerName MCP服务器名称（模糊匹配）
+	McpServerName string `json:"mcpServerName,omitempty"`
+	// Type MCP服务器类型
+	Type string `json:"type,omitempty"`
 }
 
 // McpServerConsumer MCP服务器消费者
@@ -110,6 +117,117 @@ type McpServerConsumer struct {
 // McpServerConsumerDetail MCP服务器消费者详情
 type McpServerConsumerDetail struct {
 	McpServerConsumer
+	// McpServerName MCP服务器名称
+	McpServerName string `json:"mcpServerName,omitempty"`
 	// Consumer 消费者详情
 	Consumer *Consumer `json:"consumer,omitempty"`
+}
+
+// McpServerConsumers MCP服务器消费者列表
+type McpServerConsumers struct {
+	// McpServerName MCP服务器名称
+	McpServerName string `json:"mcpServerName,omitempty"`
+	// Consumers 消费者名称列表
+	Consumers []string `json:"consumers,omitempty"`
+}
+
+// McpServerConsumersPageQuery MCP服务器消费者分页查询
+type McpServerConsumersPageQuery struct {
+	CommonPageQuery
+	// McpServerName MCP服务器名称
+	McpServerName string `json:"mcpServerName,omitempty"`
+	// ConsumerName 消费者名称（模糊匹配）
+	ConsumerName string `json:"consumerName,omitempty"`
+}
+
+// McpServerConfigMap MCP服务器ConfigMap配置
+type McpServerConfigMap struct {
+	// Servers 服务器列表
+	Servers []McpServerConfigMapServer `json:"servers,omitempty"`
+	// MatchList 匹配规则列表
+	MatchList []McpServerConfigMapMatchList `json:"match_list,omitempty"`
+}
+
+// McpServerConfigMapServer MCP服务器ConfigMap服务器配置
+type McpServerConfigMapServer struct {
+	// Name 服务器名称
+	Name string `json:"name,omitempty"`
+	// Config 服务器配置
+	Config map[string]interface{} `json:"config,omitempty"`
+}
+
+// McpServerConfigMapMatchList MCP服务器ConfigMap匹配规则
+type McpServerConfigMapMatchList struct {
+	// MatchRulePath 匹配规则路径
+	MatchRulePath string `json:"match_rule_path,omitempty"`
+	// MatchRuleDomain 匹配规则域名
+	MatchRuleDomain string `json:"match_rule_domain,omitempty"`
+	// MatchRuleType 匹配规则类型
+	MatchRuleType string `json:"match_rule_type,omitempty"`
+}
+
+// SwaggerContent Swagger内容
+type SwaggerContent struct {
+	// Content Swagger文件内容
+	Content string `json:"content,omitempty"`
+}
+
+// ParseMcpServerTypeEnum 从字符串解析MCP服务器类型
+func ParseMcpServerTypeEnum(name string) McpServerTypeEnum {
+	switch name {
+	case "OPEN_API", "open_api":
+		return McpServerTypeOpenApi
+	case "DATABASE", "database":
+		return McpServerTypeDatabase
+	case "DIRECT_ROUTE", "direct_route":
+		return McpServerTypeDirectRoute
+	default:
+		return ""
+	}
+}
+
+// Value 获取MCP服务器类型的值
+func (t McpServerTypeEnum) Value() string {
+	switch t {
+	case McpServerTypeOpenApi:
+		return "open_api"
+	case McpServerTypeDatabase:
+		return "database"
+	case McpServerTypeDirectRoute:
+		return "direct_route"
+	default:
+		return ""
+	}
+}
+
+// ParseMcpServerDBTypeEnum 从字符串解析数据库类型
+func ParseMcpServerDBTypeEnum(name string) McpServerDBTypeEnum {
+	switch name {
+	case "MYSQL", "mysql":
+		return McpServerDBTypeMysql
+	case "POSTGRESQL", "postgresql", "postgres":
+		return McpServerDBTypePostgresql
+	case "SQLITE", "sqlite":
+		return McpServerDBTypeSqlite
+	case "CLICKHOUSE", "clickhouse":
+		return McpServerDBTypeClickhouse
+	default:
+		return ""
+	}
+}
+
+// Value 获取数据库类型的值
+func (t McpServerDBTypeEnum) Value() string {
+	switch t {
+	case McpServerDBTypeMysql:
+		return "mysql"
+	case McpServerDBTypePostgresql:
+		return "postgres"
+	case McpServerDBTypeSqlite:
+		return "sqlite"
+	case McpServerDBTypeClickhouse:
+		return "clickhouse"
+	default:
+		return ""
+	}
 }

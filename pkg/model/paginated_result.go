@@ -34,6 +34,32 @@ func NewPaginatedResult[T any](data []T, total, pageNum, pageSize int) *Paginate
 	}
 }
 
+// PaginatedResultFromFullList creates a PaginatedResult from a full list with pagination.
+func PaginatedResultFromFullList[T any](list []T, query *CommonPageQuery) *PaginatedResult[T] {
+	total := len(list)
+	if query == nil {
+		return NewPaginatedResult(list, total, 1, total)
+	}
+
+	pageNum := query.PageNum
+	if pageNum <= 0 {
+		pageNum = 1
+	}
+	pageSize := query.GetPageSize()
+
+	start := (pageNum - 1) * pageSize
+	end := start + pageSize
+
+	if start >= total {
+		return NewPaginatedResult([]T{}, total, pageNum, pageSize)
+	}
+	if end > total {
+		end = total
+	}
+
+	return NewPaginatedResult(list[start:end], total, pageNum, pageSize)
+}
+
 // CommonPageQuery represents common pagination query parameters.
 type CommonPageQuery struct {
 	// PageNum is the page number (1-based).
