@@ -74,17 +74,27 @@ func (s *MockConsumerService) Get(ctx context.Context, name string) (*model.Cons
 	return nil, nil
 }
 
-// Add 添加消费者
-func (s *MockConsumerService) Add(ctx context.Context, consumer *model.Consumer) (*model.Consumer, error) {
-	return consumer, nil
-}
-
-// Update 更新消费者
-func (s *MockConsumerService) Update(ctx context.Context, consumer *model.Consumer) (*model.Consumer, error) {
+// AddOrUpdate 添加或更新消费者
+func (s *MockConsumerService) AddOrUpdate(ctx context.Context, consumer *model.Consumer) (*model.Consumer, error) {
 	return consumer, nil
 }
 
 // Delete 删除消费者
 func (s *MockConsumerService) Delete(ctx context.Context, name string) error {
+	return nil
+}
+
+// ListAllowLists 列出所有允许列表
+func (s *MockConsumerService) ListAllowLists(ctx context.Context) ([]model.AllowList, error) {
+	return []model.AllowList{}, nil
+}
+
+// GetAllowList 获取指定目标的允许列表
+func (s *MockConsumerService) GetAllowList(ctx context.Context, targets map[model.WasmPluginInstanceScope]string) (*model.AllowList, error) {
+	return nil, nil
+}
+
+// UpdateAllowList 更新允许列表
+func (s *MockConsumerService) UpdateAllowList(ctx context.Context, operation model.AllowListOperation, allowList *model.AllowList) error {
 	return nil
 }

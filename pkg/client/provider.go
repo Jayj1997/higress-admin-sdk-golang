@@ -112,8 +112,8 @@ func NewHigressServiceProvider(cfg *config.HigressServiceConfig) (HigressService
 		kubernetesModelConverter,
 	)
 
-	// 9. 创建ConsumerService (Mock实现，将在里程碑9中完整实现)
-	consumerService := mock.NewMockConsumerService()
+	// 9. 创建ConsumerService
+	consumerService := service.NewConsumerServiceImpl(wasmPluginInstanceService)
 
 	// 10. 创建RouteService
 	routeService := service.NewRouteService(kubernetesClientService, kubernetesModelConverter, wasmPluginInstanceService)
