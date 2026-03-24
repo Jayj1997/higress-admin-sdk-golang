@@ -112,7 +112,7 @@ func (h *DefaultLlmProviderHandler) NormalizeConfigs(configurations map[string]i
 
 // BuildServiceSource 构建服务来源
 func (h *DefaultLlmProviderHandler) BuildServiceSource(providerName string, providerConfig map[string]interface{}) (*model.ServiceSource, error) {
-	endpoints := h.getProviderEndpoints(providerConfig)
+	endpoints := h.GetProviderEndpoints(providerConfig)
 	if len(endpoints) == 0 {
 		return nil, errors.NewValidationError("No endpoints found for provider: " + providerName)
 	}
@@ -186,8 +186,8 @@ func (h *DefaultLlmProviderHandler) NeedSyncRouteAfterUpdate() bool {
 	return false
 }
 
-// getProviderEndpoints 获取提供商端点
-func (h *DefaultLlmProviderHandler) getProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
+// GetProviderEndpoints 获取提供商端点
+func (h *DefaultLlmProviderHandler) GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
 	return []model.LlmProviderEndpoint{
 		{
 			Protocol:    h.protocol,

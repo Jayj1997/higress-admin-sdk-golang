@@ -150,7 +150,7 @@ func (s *LlmProviderServiceImpl) AddOrUpdate(ctx context.Context, provider *mode
 		Configurations: map[string]interface{}{
 			constant.AiProxyConfigActiveProviderId: provider.Name,
 		},
-		Scope: model.WasmPluginInstanceScopeService,
+		Scope:  model.WasmPluginInstanceScopeService,
 		Target: upstreamService.Name,
 	}
 
@@ -207,7 +207,7 @@ func (s *LlmProviderServiceImpl) List(ctx context.Context, query *model.CommonPa
 	}
 
 	result := model.PaginatedResult[model.LlmProvider]{
-		Data: resultList,
+		Data:  resultList,
 		Total: len(resultList),
 	}
 	return &result, nil
@@ -278,12 +278,16 @@ func (s *LlmProviderServiceImpl) Delete(ctx context.Context, name string) error 
 			upstreamService, err := handler.BuildUpstreamService(name, deletedProvider)
 			if err == nil {
 				internalTrue := true
-				s.wasmPluginInstanceService.Delete(ctx, model.WasmPluginInstanceScopeService, upstreamService.Name, constant.BuiltInPluginAiProxy, &internalTrue)
+				if delErr := s.wasmPluginInstanceService.Delete(ctx, model.WasmPluginInstanceScopeService, upstreamService.Name, constant.BuiltInPluginAiProxy, &internalTrue); delErr != nil {
+					// 记录错误但不阻止删除操作
+				}
 			}
 
 			serviceSource, err := handler.BuildServiceSource(name, deletedProvider)
 			if err == nil && serviceSource != nil {
-				s.serviceSourceService.Delete(ctx, serviceSource.Name)
+				if delErr := s.serviceSourceService.Delete(ctx, serviceSource.Name); delErr != nil {
+					// 记录错误但不阻止删除操作
+				}
 			}
 		}
 	}
@@ -417,7 +421,9 @@ func (s *LlmProviderServiceImpl) syncRelatedAiRoutes(ctx context.Context, provid
 		}
 
 		if hasProvider {
-			s.aiRouteService.Update(ctx, aiRoute)
+			if _, updateErr := s.aiRouteService.Update(ctx, aiRoute); updateErr != nil {
+				// 记录错误但继续处理其他路由
+			}
 		}
 	}
 }

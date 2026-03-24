@@ -23,8 +23,8 @@ func NewAzureLlmProviderHandler() *AzureLlmProviderHandler {
 	}
 }
 
-// getProviderEndpoints 获取提供商端点 - Azure需要从配置中获取
-func (h *AzureLlmProviderHandler) getProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
+// GetProviderEndpoints 获取提供商端点 - Azure需要从配置中获取
+func (h *AzureLlmProviderHandler) GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
 	// Azure从配置中获取域名
 	domain := getString(providerConfig, "resourceName")
 	if domain == "" {

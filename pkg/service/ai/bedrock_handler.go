@@ -22,8 +22,8 @@ func NewBedrockLlmProviderHandler() *BedrockLlmProviderHandler {
 	}
 }
 
-// getProviderEndpoints 获取提供商端点 - Bedrock需要从配置中获取区域
-func (h *BedrockLlmProviderHandler) getProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
+// GetProviderEndpoints 获取提供商端点 - Bedrock需要从配置中获取区域
+func (h *BedrockLlmProviderHandler) GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
 	// 从配置中获取AWS区域
 	region := getString(providerConfig, "awsRegion")
 	if region == "" {

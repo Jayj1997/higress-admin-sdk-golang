@@ -344,7 +344,9 @@ func (s *KubernetesClientService) GetWasmPlugin(ctx context.Context, name string
 // CreateWasmPlugin creates a WasmPlugin
 func (s *KubernetesClientService) CreateWasmPlugin(ctx context.Context, plugin *wasm.V1alpha1WasmPlugin) (*wasm.V1alpha1WasmPlugin, error) {
 	obj := wasmPluginToUnstructured(plugin)
-	s.renderDefaultMetadataUnstructured(obj)
+	if err := s.renderDefaultMetadataUnstructured(obj); err != nil {
+		return nil, err
+	}
 	result, err := s.dynamicClient.Resource(wasmPluginGVR).Namespace(s.config.GetControllerNamespace()).Create(ctx, obj, metav1.CreateOptions{})
 	if err != nil {
 		return nil, err
@@ -355,7 +357,9 @@ func (s *KubernetesClientService) CreateWasmPlugin(ctx context.Context, plugin *
 // UpdateWasmPlugin updates a WasmPlugin
 func (s *KubernetesClientService) UpdateWasmPlugin(ctx context.Context, plugin *wasm.V1alpha1WasmPlugin) (*wasm.V1alpha1WasmPlugin, error) {
 	obj := wasmPluginToUnstructured(plugin)
-	s.renderDefaultMetadataUnstructured(obj)
+	if err := s.renderDefaultMetadataUnstructured(obj); err != nil {
+		return nil, err
+	}
 	result, err := s.dynamicClient.Resource(wasmPluginGVR).Namespace(s.config.GetControllerNamespace()).Update(ctx, obj, metav1.UpdateOptions{})
 	if err != nil {
 		return nil, err
@@ -414,7 +418,9 @@ func (s *KubernetesClientService) GetMcpBridge(ctx context.Context, name string)
 // CreateMcpBridge creates a McpBridge
 func (s *KubernetesClientService) CreateMcpBridge(ctx context.Context, bridge *mcp.V1McpBridge) (*mcp.V1McpBridge, error) {
 	obj := mcpBridgeToUnstructured(bridge)
-	s.renderDefaultMetadataUnstructured(obj)
+	if err := s.renderDefaultMetadataUnstructured(obj); err != nil {
+		return nil, err
+	}
 	result, err := s.dynamicClient.Resource(mcpBridgeGVR).Namespace(s.config.GetControllerNamespace()).Create(ctx, obj, metav1.CreateOptions{})
 	if err != nil {
 		return nil, err
@@ -425,7 +431,9 @@ func (s *KubernetesClientService) CreateMcpBridge(ctx context.Context, bridge *m
 // UpdateMcpBridge updates a McpBridge
 func (s *KubernetesClientService) UpdateMcpBridge(ctx context.Context, bridge *mcp.V1McpBridge) (*mcp.V1McpBridge, error) {
 	obj := mcpBridgeToUnstructured(bridge)
-	s.renderDefaultMetadataUnstructured(obj)
+	if err := s.renderDefaultMetadataUnstructured(obj); err != nil {
+		return nil, err
+	}
 	result, err := s.dynamicClient.Resource(mcpBridgeGVR).Namespace(s.config.GetControllerNamespace()).Update(ctx, obj, metav1.UpdateOptions{})
 	if err != nil {
 		return nil, err
@@ -465,7 +473,9 @@ func (s *KubernetesClientService) GetEnvoyFilter(ctx context.Context, name strin
 // CreateEnvoyFilter creates an EnvoyFilter
 func (s *KubernetesClientService) CreateEnvoyFilter(ctx context.Context, filter *istio.V1alpha3EnvoyFilter) (*istio.V1alpha3EnvoyFilter, error) {
 	obj := envoyFilterToUnstructured(filter)
-	s.renderDefaultMetadataUnstructured(obj)
+	if err := s.renderDefaultMetadataUnstructured(obj); err != nil {
+		return nil, err
+	}
 	result, err := s.dynamicClient.Resource(envoyFilterGVR).Namespace(s.config.GetControllerNamespace()).Create(ctx, obj, metav1.CreateOptions{})
 	if err != nil {
 		return nil, err
@@ -476,7 +486,9 @@ func (s *KubernetesClientService) CreateEnvoyFilter(ctx context.Context, filter 
 // UpdateEnvoyFilter updates an EnvoyFilter
 func (s *KubernetesClientService) UpdateEnvoyFilter(ctx context.Context, filter *istio.V1alpha3EnvoyFilter) (*istio.V1alpha3EnvoyFilter, error) {
 	obj := envoyFilterToUnstructured(filter)
-	s.renderDefaultMetadataUnstructured(obj)
+	if err := s.renderDefaultMetadataUnstructured(obj); err != nil {
+		return nil, err
+	}
 	result, err := s.dynamicClient.Resource(envoyFilterGVR).Namespace(s.config.GetControllerNamespace()).Update(ctx, obj, metav1.UpdateOptions{})
 	if err != nil {
 		return nil, err
@@ -601,13 +613,16 @@ func (s *KubernetesClientService) renderDefaultMetadata(obj metav1.Object) {
 	obj.SetLabels(labels)
 }
 
-func (s *KubernetesClientService) renderDefaultMetadataUnstructured(obj *unstructured.Unstructured) {
+func (s *KubernetesClientService) renderDefaultMetadataUnstructured(obj *unstructured.Unstructured) error {
 	labels, _, _ := unstructured.NestedStringMap(obj.Object, "metadata", "labels")
 	if labels == nil {
 		labels = make(map[string]string)
 	}
 	labels[constant.LabelResourceDefinerKey] = constant.LabelResourceDefinerValue
-	unstructured.SetNestedStringMap(obj.Object, labels, "metadata", "labels")
+	if err := unstructured.SetNestedStringMap(obj.Object, labels, "metadata", "labels"); err != nil {
+		return fmt.Errorf("failed to set labels: %w", err)
+	}
+	return nil
 }
 
 func buildLabelSelector(key, value string) string {

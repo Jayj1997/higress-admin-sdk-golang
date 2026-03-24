@@ -108,6 +108,17 @@ func (h *MockLlmProviderHandler) NeedSyncRouteAfterUpdate() bool {
 	return false
 }
 
+func (h *MockLlmProviderHandler) GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
+	return []model.LlmProviderEndpoint{
+		{
+			Protocol:    "https",
+			Address:     "api.mock.com",
+			Port:        443,
+			ContextPath: "/",
+		},
+	}
+}
+
 // TestMockLlmProviderHandler tests the mock handler implementation
 func TestMockLlmProviderHandler(t *testing.T) {
 	handler := &MockLlmProviderHandler{providerType: "mock"}

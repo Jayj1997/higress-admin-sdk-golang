@@ -22,8 +22,8 @@ func NewVertexLlmProviderHandler() *VertexLlmProviderHandler {
 	}
 }
 
-// getProviderEndpoints 获取提供商端点 - Vertex需要从配置中获取项目和区域
-func (h *VertexLlmProviderHandler) getProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
+// GetProviderEndpoints 获取提供商端点 - Vertex需要从配置中获取项目和区域
+func (h *VertexLlmProviderHandler) GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
 	// 从配置中获取GCP项目和区域
 	project := getString(providerConfig, "gcpProject")
 	location := getString(providerConfig, "gcpLocation")

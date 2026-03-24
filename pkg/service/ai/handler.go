@@ -37,4 +37,7 @@ type LlmProviderHandler interface {
 
 	// NeedSyncRouteAfterUpdate 更新后是否需要同步路由
 	NeedSyncRouteAfterUpdate() bool
+
+	// GetProviderEndpoints 获取提供商端点
+	GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint
 }

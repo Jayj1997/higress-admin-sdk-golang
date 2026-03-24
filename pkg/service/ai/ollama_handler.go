@@ -22,8 +22,8 @@ func NewOllamaLlmProviderHandler() *OllamaLlmProviderHandler {
 	}
 }
 
-// getProviderEndpoints 获取提供商端点 - Ollama支持自定义地址
-func (h *OllamaLlmProviderHandler) getProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
+// GetProviderEndpoints 获取提供商端点 - Ollama支持自定义地址
+func (h *OllamaLlmProviderHandler) GetProviderEndpoints(providerConfig map[string]interface{}) []model.LlmProviderEndpoint {
 	// 从配置中获取服务地址
 	serverHost := getString(providerConfig, "serverHost")
 	if serverHost == "" {
