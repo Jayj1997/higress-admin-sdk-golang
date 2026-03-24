@@ -2,6 +2,7 @@
 package kubernetes
 
 import (
+	"os"
 	"testing"
 
 	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes/crd/istio"
@@ -13,14 +14,51 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// skipIfNoKubernetes skips the test if no Kubernetes cluster is available
+// 如果没有可用的 Kubernetes 集群，则跳过测试
+func skipIfNoKubernetes(t *testing.T) {
+	t.Helper()
+	// Check if we're in a Kubernetes cluster or have kubeconfig available
+	// 检查是否在 Kubernetes 集群中或有可用的 kubeconfig
+	if isInCluster() {
+		return
+	}
+
+	// Check for kubeconfig file
+	// 检查 kubeconfig 文件
+	home := os.Getenv("HOME")
+	if home == "" {
+		home = os.Getenv("USERPROFILE")
+	}
+	if home != "" {
+		kubeConfigPath := home + "/.kube/config"
+		if _, err := os.Stat(kubeConfigPath); err == nil {
+			return
+		}
+	}
+
+	// Check for KUBECONFIG environment variable
+	// 检查 KUBECONFIG 环境变量
+	kubeConfig := os.Getenv("KUBECONFIG")
+	if kubeConfig != "" {
+		if _, err := os.Stat(kubeConfig); err == nil {
+			return
+		}
+	}
+
+	t.Skip("Skipping test: no Kubernetes cluster available (not in-cluster and no kubeconfig found)")
+}
+
 // TestNewKubernetesClientService tests the creation of KubernetesClientService
 // 测试 KubernetesClientService 的创建
 // 调用方式: go test -v -run TestNewKubernetesClientService ./internal/kubernetes/
 func TestNewKubernetesClientService(t *testing.T) {
 	tests := []struct {
-		name    string
-		config  *config.HigressServiceConfig
-		wantErr bool
+		name       string
+		config     *config.HigressServiceConfig
+		wantErr    bool
+		needK8s    bool // Whether this test case needs a real Kubernetes cluster
+		skipReason string
 	}{
 		{
 			name: "valid config with kubeconfig path",
@@ -31,7 +69,9 @@ func TestNewKubernetesClientService(t *testing.T) {
 				ControllerJwtPolicy:        constant.JwtPolicyFirstPartyJwt,
 				ControllerWatchedNamespace: "",
 			},
-			wantErr: false,
+			wantErr:    false,
+			needK8s:    true, // This test case needs a real Kubernetes cluster
+			skipReason: "no Kubernetes cluster available",
 		},
 		{
 			name: "missing controller namespace",
@@ -41,6 +81,7 @@ func TestNewKubernetesClientService(t *testing.T) {
 				ControllerJwtPolicy:   constant.JwtPolicyFirstPartyJwt,
 			},
 			wantErr: true,
+			needK8s: false, // This test case only validates config, doesn't need K8s
 		},
 		{
 			name: "missing controller service host",
@@ -50,6 +91,7 @@ func TestNewKubernetesClientService(t *testing.T) {
 				ControllerJwtPolicy:   constant.JwtPolicyFirstPartyJwt,
 			},
 			wantErr: true,
+			needK8s: false,
 		},
 		{
 			name: "invalid controller service port",
@@ -60,6 +102,7 @@ func TestNewKubernetesClientService(t *testing.T) {
 				ControllerJwtPolicy:   constant.JwtPolicyFirstPartyJwt,
 			},
 			wantErr: true,
+			needK8s: false,
 		},
 		{
 			name: "missing jwt policy",
@@ -69,11 +112,18 @@ func TestNewKubernetesClientService(t *testing.T) {
 				ControllerNamespace:   "higress-system",
 			},
 			wantErr: true,
+			needK8s: false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			// Skip test cases that need Kubernetes if no cluster is available
+			// 如果没有可用的集群，跳过需要 Kubernetes 的测试用例
+			if tt.needK8s {
+				skipIfNoKubernetes(t)
+			}
+
 			_, err := NewKubernetesClientService(tt.config)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewKubernetesClientService() error = %v, wantErr %v", err, tt.wantErr)
@@ -86,6 +136,10 @@ func TestNewKubernetesClientService(t *testing.T) {
 // 测试 IsNamespaceProtected 函数
 // 调用方式: go test -v -run TestIsNamespaceProtected ./internal/kubernetes/
 func TestIsNamespaceProtected(t *testing.T) {
+	// Skip if no Kubernetes cluster is available
+	// 如果没有可用的 Kubernetes 集群，则跳过
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -138,6 +192,10 @@ func TestIsNamespaceProtected(t *testing.T) {
 // 测试 renderDefaultMetadata 函数
 // 调用方式: go test -v -run TestRenderDefaultMetadata ./internal/kubernetes/
 func TestRenderDefaultMetadata(t *testing.T) {
+	// Skip if no Kubernetes cluster is available
+	// 如果没有可用的 Kubernetes 集群，则跳过
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
