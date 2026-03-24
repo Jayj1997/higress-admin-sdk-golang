@@ -80,9 +80,15 @@ type WasmPluginPageQuery struct {
 	// Name filters plugins by name.
 	Name string `json:"name,omitempty"`
 
+	// Version filters plugins by version.
+	Version string `json:"version,omitempty"`
+
 	// Category filters plugins by category.
 	Category string `json:"category,omitempty"`
 
 	// BuiltIn filters plugins by built-in status.
 	BuiltIn *bool `json:"builtIn,omitempty"`
+
+	// Lang is the language for i18n (e.g., "zh-CN", "en-US").
+	Lang string `json:"lang,omitempty"`
 }

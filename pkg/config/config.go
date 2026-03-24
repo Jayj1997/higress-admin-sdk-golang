@@ -55,6 +55,13 @@ type WasmPluginServiceConfig struct {
 
 	// ImagePullPolicy is the pull policy for WASM plugin images.
 	ImagePullPolicy string
+
+	// CustomImageUrlPattern is the pattern for custom image URLs.
+	// Supported placeholders: ${name}, ${version}
+	CustomImageUrlPattern string
+
+	// ImagePullSecret is the secret for pulling WASM plugin images.
+	ImagePullSecret string
 }
 
 // Option is a function that modifies the configuration.

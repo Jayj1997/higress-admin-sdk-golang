@@ -9,6 +9,9 @@ type WasmPlugin struct {
 	// Version is the plugin version.
 	Version string `json:"version,omitempty"`
 
+	// PluginVersion is the plugin version (alias for Version).
+	PluginVersion string `json:"pluginVersion,omitempty"`
+
 	// Category is the plugin category.
 	Category string `json:"category,omitempty"`
 
@@ -21,7 +24,13 @@ type WasmPlugin struct {
 	// ImageURL is the URL of the plugin image.
 	ImageURL string `json:"imageUrl,omitempty"`
 
-	// Icon is the plugin icon URL.
+	// ImageRepository is the repository part of the image URL.
+	ImageRepository string `json:"imageRepository,omitempty"`
+
+	// ImageVersion is the version part of the image URL.
+	ImageVersion string `json:"imageVersion,omitempty"`
+
+	// Icon is the plugin icon URL or base64 encoded data.
 	Icon string `json:"icon,omitempty"`
 
 	// BuiltIn indicates whether this is a built-in plugin.
@@ -38,6 +47,24 @@ type WasmPlugin struct {
 
 	// ConfigSchema is the plugin configuration schema.
 	ConfigSchema map[string]interface{} `json:"configSchema,omitempty"`
+
+	// RouteConfigSchema is the route-level configuration schema.
+	RouteConfigSchema map[string]interface{} `json:"routeConfigSchema,omitempty"`
+
+	// ImagePullPolicy is the image pull policy.
+	ImagePullPolicy string `json:"imagePullPolicy,omitempty"`
+
+	// ImagePullSecret is the image pull secret.
+	ImagePullSecret string `json:"imagePullSecret,omitempty"`
+
+	// Lang is the language for i18n.
+	Lang string `json:"lang,omitempty"`
+}
+
+// WasmPluginConfig represents the configuration schema of a WASM plugin.
+type WasmPluginConfig struct {
+	// Schema is the OpenAPI v3 schema.
+	Schema map[string]interface{} `json:"schema,omitempty"`
 }
 
 // WasmPluginInstance represents an instance of a WASM plugin.
@@ -96,4 +123,49 @@ func (s WasmPluginInstanceScope) Priority() int {
 	default:
 		return 0
 	}
+}
+
+// Validate validates the WasmPluginInstance.
+func (i *WasmPluginInstance) Validate() error {
+	if i.PluginName == "" {
+		return &ValidationError{Field: "pluginName", Message: "plugin name is required"}
+	}
+	if len(i.Targets) == 0 && i.Scope == "" {
+		return &ValidationError{Field: "scope", Message: "scope or targets is required"}
+	}
+	return nil
+}
+
+// SyncDeprecatedFields syncs deprecated fields to the new fields.
+func (i *WasmPluginInstance) SyncDeprecatedFields() {
+	// Sync scope/target to targets
+	if i.Scope != "" && i.Target != "" {
+		if i.Targets == nil {
+			i.Targets = make(map[WasmPluginInstanceScope]string)
+		}
+		i.Targets[i.Scope] = i.Target
+	}
+
+	// Sync targets to scope/target
+	if len(i.Targets) == 1 {
+		for scope, target := range i.Targets {
+			i.Scope = scope
+			i.Target = target
+			break
+		}
+	}
+}
+
+// ValidationError represents a validation error.
+type ValidationError struct {
+	Field   string `json:"field,omitempty"`
+	Message string `json:"message,omitempty"`
+}
+
+// Error implements the error interface.
+func (e *ValidationError) Error() string {
+	if e.Field != "" {
+		return e.Field + ": " + e.Message
+	}
+	return e.Message
 }

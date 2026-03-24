@@ -2,7 +2,6 @@
 package service
 
 import (
-	"context"
 	"testing"
 
 	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
@@ -53,43 +52,11 @@ func TestRouteService_List(t *testing.T) {
 }
 
 // TestMockWasmPluginInstanceService tests the mock implementation
+// Note: MockWasmPluginInstanceService has been removed, use WasmPluginInstanceServiceImpl instead
 func TestMockWasmPluginInstanceService(t *testing.T) {
-	mockSvc := NewMockWasmPluginInstanceService()
-	require.NotNil(t, mockSvc)
-
-	ctx := context.Background()
-
-	// Test List
-	instances, err := mockSvc.List(ctx, WasmPluginInstanceScopeGlobal, "")
-	assert.NoError(t, err)
-	assert.Empty(t, instances)
-
-	// Test Get
-	instance, err := mockSvc.Get(ctx, "test-id")
-	assert.NoError(t, err)
-	assert.Nil(t, instance)
-
-	// Test Add
-	testInstance := &model.WasmPluginInstance{
-		PluginName:    "test-plugin",
-		PluginVersion: "1.0.0",
-	}
-	result, err := mockSvc.Add(ctx, testInstance)
-	assert.NoError(t, err)
-	assert.Equal(t, testInstance, result)
-
-	// Test Update
-	result, err = mockSvc.Update(ctx, testInstance)
-	assert.NoError(t, err)
-	assert.Equal(t, testInstance, result)
-
-	// Test Delete
-	err = mockSvc.Delete(ctx, "test-id")
-	assert.NoError(t, err)
-
-	// Test DeleteAll
-	err = mockSvc.DeleteAll(ctx, WasmPluginInstanceScopeGlobal, "")
-	assert.NoError(t, err)
+	// This test is now a placeholder since the mock has been replaced with real implementation
+	// The real implementation tests are in wasm_plugin_service_test.go
+	var _ WasmPluginInstanceService = (*WasmPluginInstanceServiceImpl)(nil)
 }
 
 // TestPaginatedResult tests the pagination logic
@@ -208,10 +175,10 @@ func TestProxyServerModel(t *testing.T) {
 
 // TestWasmPluginInstanceScope tests the scope constants
 func TestWasmPluginInstanceScope(t *testing.T) {
-	assert.Equal(t, WasmPluginInstanceScope("GLOBAL"), WasmPluginInstanceScopeGlobal)
-	assert.Equal(t, WasmPluginInstanceScope("DOMAIN"), WasmPluginInstanceScopeDomain)
-	assert.Equal(t, WasmPluginInstanceScope("ROUTE"), WasmPluginInstanceScopeRoute)
-	assert.Equal(t, WasmPluginInstanceScope("SERVICE"), WasmPluginInstanceScopeService)
+	assert.Equal(t, model.WasmPluginInstanceScope("global"), model.WasmPluginInstanceScopeGlobal)
+	assert.Equal(t, model.WasmPluginInstanceScope("domain"), model.WasmPluginInstanceScopeDomain)
+	assert.Equal(t, model.WasmPluginInstanceScope("route"), model.WasmPluginInstanceScopeRoute)
+	assert.Equal(t, model.WasmPluginInstanceScope("service"), model.WasmPluginInstanceScopeService)
 }
 
 // TestNewServiceFunctions tests the service constructor functions

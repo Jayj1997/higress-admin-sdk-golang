@@ -95,11 +95,22 @@ func NewHigressServiceProvider(cfg *config.HigressServiceConfig) (HigressService
 	// 6. 创建TlsCertificateService
 	tlsCertificateService := service.NewTlsCertificateService(kubernetesClientService, kubernetesModelConverter)
 
-	// 7. 创建WasmPluginService (Mock实现，将在里程碑7中完整实现)
-	wasmPluginService := mock.NewMockWasmPluginService()
+	// 7. 创建WasmPluginService
+	wasmPluginService, err := service.NewWasmPluginService(
+		kubernetesClientService,
+		kubernetesModelConverter,
+		cfg.GetWasmPluginServiceConfig(),
+	)
+	if err != nil {
+		return nil, err
+	}
 
-	// 8. 创建WasmPluginInstanceService (Mock实现，将在里程碑7中完整实现)
-	wasmPluginInstanceService := service.NewMockWasmPluginInstanceService()
+	// 8. 创建WasmPluginInstanceService
+	wasmPluginInstanceService := service.NewWasmPluginInstanceService(
+		wasmPluginService,
+		kubernetesClientService,
+		kubernetesModelConverter,
+	)
 
 	// 9. 创建ConsumerService (Mock实现，将在里程碑9中完整实现)
 	consumerService := mock.NewMockConsumerService()

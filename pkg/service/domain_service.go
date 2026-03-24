@@ -179,7 +179,7 @@ func (s *DomainServiceImpl) Delete(ctx context.Context, domainName string) error
 
 	// 删除关联的插件实例
 	if s.wasmPluginInstanceSvc != nil {
-		s.wasmPluginInstanceSvc.DeleteAll(ctx, WasmPluginInstanceScopeDomain, domainName)
+		s.wasmPluginInstanceSvc.DeleteAll(ctx, model.WasmPluginInstanceScopeDomain, domainName)
 	}
 
 	return nil
