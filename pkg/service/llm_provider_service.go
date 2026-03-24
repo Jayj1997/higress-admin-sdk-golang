@@ -417,9 +417,7 @@ func (s *LlmProviderServiceImpl) syncRelatedAiRoutes(ctx context.Context, provid
 		}
 
 		if hasProvider {
-			if _, updateErr := s.aiRouteService.Update(ctx, aiRoute); updateErr != nil {
-				// 记录错误但继续处理其他路由
-			}
+			_, _ = s.aiRouteService.Update(ctx, aiRoute)
 		}
 	}
 }
