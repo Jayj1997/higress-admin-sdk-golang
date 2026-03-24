@@ -1253,7 +1253,7 @@ func (c *KubernetesModelConverter) fillIngressAnnotations(ingress *networkingv1.
 		return nil
 	}
 
-	if r.CustomConfigs == nil || len(r.CustomConfigs) == 0 {
+	if len(r.CustomConfigs) == 0 {
 		return nil
 	}
 
@@ -1277,7 +1277,7 @@ func (c *KubernetesModelConverter) fillIngressLabels(ingress *networkingv1.Ingre
 		return
 	}
 
-	if r.CustomLabels == nil || len(r.CustomLabels) == 0 {
+	if len(r.CustomLabels) == 0 {
 		return
 	}
 
@@ -1368,25 +1368,6 @@ func normalizeDomainName(domain string) string {
 	domain = strings.ReplaceAll(domain, "*", "wildcard")
 	domain = strings.ToLower(domain)
 	return domain
-}
-
-// parseImageURL parses an image URL into repository and tag.
-func parseImageURL(imageURL string) (repository, tag string) {
-	if imageURL == "" {
-		return "", ""
-	}
-
-	// Check for tag separator
-	parts := strings.SplitN(imageURL, ":", 2)
-	if len(parts) == 2 {
-		repository = parts[0]
-		tag = parts[1]
-	} else {
-		repository = imageURL
-		tag = "latest"
-	}
-
-	return repository, tag
 }
 
 // parseHeaderConfig parses header configuration string.

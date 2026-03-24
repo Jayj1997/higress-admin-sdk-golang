@@ -151,10 +151,7 @@ func (s *RouteServiceImpl) Delete(ctx context.Context, routeName string) error {
 
 	// 删除关联的插件实例
 	if s.wasmPluginInstanceSvc != nil {
-		if delErr := s.wasmPluginInstanceSvc.DeleteAll(ctx, model.WasmPluginInstanceScopeRoute, routeName); delErr != nil {
-			// 记录错误但不阻止删除操作，因为路由已删除
-			// 在实际生产环境中，这里应该记录日志
-		}
+		_ = s.wasmPluginInstanceSvc.DeleteAll(ctx, model.WasmPluginInstanceScopeRoute, routeName)
 	}
 
 	return nil

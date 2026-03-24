@@ -179,9 +179,7 @@ func (s *DomainServiceImpl) Delete(ctx context.Context, domainName string) error
 
 	// 删除关联的插件实例
 	if s.wasmPluginInstanceSvc != nil {
-		if delErr := s.wasmPluginInstanceSvc.DeleteAll(ctx, model.WasmPluginInstanceScopeDomain, domainName); delErr != nil {
-			// 记录错误但不阻止删除操作，因为域名已删除
-		}
+		_ = s.wasmPluginInstanceSvc.DeleteAll(ctx, model.WasmPluginInstanceScopeDomain, domainName)
 	}
 
 	return nil

@@ -278,16 +278,12 @@ func (s *LlmProviderServiceImpl) Delete(ctx context.Context, name string) error 
 			upstreamService, err := handler.BuildUpstreamService(name, deletedProvider)
 			if err == nil {
 				internalTrue := true
-				if delErr := s.wasmPluginInstanceService.Delete(ctx, model.WasmPluginInstanceScopeService, upstreamService.Name, constant.BuiltInPluginAiProxy, &internalTrue); delErr != nil {
-					// 记录错误但不阻止删除操作
-				}
+				_ = s.wasmPluginInstanceService.Delete(ctx, model.WasmPluginInstanceScopeService, upstreamService.Name, constant.BuiltInPluginAiProxy, &internalTrue)
 			}
 
 			serviceSource, err := handler.BuildServiceSource(name, deletedProvider)
 			if err == nil && serviceSource != nil {
-				if delErr := s.serviceSourceService.Delete(ctx, serviceSource.Name); delErr != nil {
-					// 记录错误但不阻止删除操作
-				}
+				_ = s.serviceSourceService.Delete(ctx, serviceSource.Name)
 			}
 		}
 	}

@@ -1116,15 +1116,6 @@ func TestKeyAuthCredentialHandler_mergeExistedConfig(t *testing.T) {
 	}
 }
 
-// Helper function to convert string slice to interface slice
-func convertToInterfaceSlice(strSlice []string) []interface{} {
-	result := make([]interface{}, len(strSlice))
-	for i, s := range strSlice {
-		result[i] = s
-	}
-	return result
-}
-
 // mockCredential is a mock implementation of Credential interface for testing
 type mockCredential struct{}
 
