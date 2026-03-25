@@ -23,6 +23,8 @@ import (
 // 调用方式: go test -v -tags=integration -run TestIngressCRUD ./internal/kubernetes/
 // 注意: 此测试需要真实的 Kubernetes 集群环境
 func TestIngressCRUD(t *testing.T) {
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -117,6 +119,8 @@ func TestIngressCRUD(t *testing.T) {
 // 调用方式: go test -v -tags=integration -run TestSecretCRUD ./internal/kubernetes/
 // 注意: 此测试需要真实的 Kubernetes 集群环境
 func TestSecretCRUD(t *testing.T) {
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -180,6 +184,8 @@ func TestSecretCRUD(t *testing.T) {
 // 调用方式: go test -v -tags=integration -run TestConfigMapCRUD ./internal/kubernetes/
 // 注意: 此测试需要真实的 Kubernetes 集群环境
 func TestConfigMapCRUD(t *testing.T) {
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -242,6 +248,8 @@ func TestConfigMapCRUD(t *testing.T) {
 // 调用方式: go test -v -tags=integration -run TestWasmPluginCRUD ./internal/kubernetes/
 // 注意: 此测试需要真实的 Kubernetes 集群环境
 func TestWasmPluginCRUD(t *testing.T) {
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -300,6 +308,8 @@ func TestWasmPluginCRUD(t *testing.T) {
 // 调用方式: go test -v -tags=integration -run TestMcpBridgeCRUD ./internal/kubernetes/
 // 注意: 此测试需要真实的 Kubernetes 集群环境
 func TestMcpBridgeCRUD(t *testing.T) {
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -364,6 +374,8 @@ func TestMcpBridgeCRUD(t *testing.T) {
 // 调用方式: go test -v -tags=integration -run TestEnvoyFilterCRUD ./internal/kubernetes/
 // 注意: 此测试需要真实的 Kubernetes 集群环境
 func TestEnvoyFilterCRUD(t *testing.T) {
+	skipIfNoKubernetes(t)
+
 	cfg := &config.HigressServiceConfig{
 		ControllerServiceHost: "localhost",
 		ControllerServicePort: 8080,
@@ -414,9 +426,4 @@ func TestEnvoyFilterCRUD(t *testing.T) {
 		t.Errorf("DeleteEnvoyFilter failed: %v", err)
 	}
 	t.Log("Deleted EnvoyFilter")
-}
-
-// Helper function to create int64 pointer
-func ptrInt64(v int64) *int64 {
-	return &v
 }
