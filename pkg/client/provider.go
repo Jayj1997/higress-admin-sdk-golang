@@ -5,7 +5,6 @@ import (
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service"
-	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mock"
 )
 
 // HigressServiceProvider 是Higress服务提供者的主接口
@@ -121,11 +120,14 @@ func NewHigressServiceProvider(cfg *config.HigressServiceConfig) (HigressService
 	// 11. 创建DomainService
 	domainService := service.NewDomainService(kubernetesClientService, kubernetesModelConverter, routeService, wasmPluginInstanceService)
 
-	// 12. 创建LlmProviderService (Mock实现，将在里程碑8中完整实现)
-	llmProviderService := mock.NewMockLlmProviderService()
+	// 12. 创建LlmProviderService
+	llmProviderService := service.NewLlmProviderService(serviceSourceService, wasmPluginInstanceService)
 
-	// 13. 创建AiRouteService (Mock实现，将在里程碑8中完整实现)
-	aiRouteService := mock.NewMockAiRouteService()
+	// 13. 创建AiRouteService
+	aiRouteService := service.NewAiRouteServiceImpl(wasmPluginInstanceService, llmProviderService)
+
+	// 设置 LlmProviderService 的 AiRouteService 引用
+	llmProviderService.SetAiRouteService(aiRouteService)
 
 	// 14. 创建McpServerService
 	mcpServerService := service.NewMcpServiceContextImpl(kubernetesClientService, routeService, consumerService)

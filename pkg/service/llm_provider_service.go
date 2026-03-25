@@ -185,8 +185,8 @@ func (s *LlmProviderServiceImpl) AddOrUpdate(ctx context.Context, provider *mode
 	return s.Get(ctx, provider.Name)
 }
 
-// List 列出所有LLM提供商
-func (s *LlmProviderServiceImpl) List(ctx context.Context, query *model.CommonPageQuery) (*model.PaginatedResult[model.LlmProvider], error) {
+// List 列出所有LLM提供商 - 接口适配器方法
+func (s *LlmProviderServiceImpl) List(ctx context.Context) ([]model.LlmProvider, error) {
 	providers := s.getProviders(ctx)
 
 	// 转换为列表
@@ -206,6 +206,16 @@ func (s *LlmProviderServiceImpl) List(ctx context.Context, query *model.CommonPa
 		resultList = append(resultList, *p)
 	}
 
+	return resultList, nil
+}
+
+// ListWithQuery 列出所有LLM提供商（带分页查询）
+func (s *LlmProviderServiceImpl) ListWithQuery(ctx context.Context, query *model.CommonPageQuery) (*model.PaginatedResult[model.LlmProvider], error) {
+	resultList, err := s.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	result := model.PaginatedResult[model.LlmProvider]{
 		Data:  resultList,
 		Total: len(resultList),
@@ -216,7 +226,11 @@ func (s *LlmProviderServiceImpl) List(ctx context.Context, query *model.CommonPa
 // Get 获取LLM提供商详情
 func (s *LlmProviderServiceImpl) Get(ctx context.Context, name string) (*model.LlmProvider, error) {
 	providers := s.getProviders(ctx)
-	return providers[name], nil
+	provider := providers[name]
+	if provider == nil {
+		return nil, errors.NewNotFoundError("LLM provider", name)
+	}
+	return provider, nil
 }
 
 // Delete 删除LLM提供商
@@ -420,4 +434,14 @@ func (s *LlmProviderServiceImpl) syncRelatedAiRoutes(ctx context.Context, provid
 			_, _ = s.aiRouteService.Update(ctx, aiRoute)
 		}
 	}
+}
+
+// Add 添加LLM提供商 - 接口适配器方法
+func (s *LlmProviderServiceImpl) Add(ctx context.Context, provider *model.LlmProvider) (*model.LlmProvider, error) {
+	return s.AddOrUpdate(ctx, provider)
+}
+
+// Update 更新LLM提供商 - 接口适配器方法
+func (s *LlmProviderServiceImpl) Update(ctx context.Context, provider *model.LlmProvider) (*model.LlmProvider, error) {
+	return s.AddOrUpdate(ctx, provider)
 }

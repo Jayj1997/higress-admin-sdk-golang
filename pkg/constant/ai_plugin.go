@@ -68,6 +68,21 @@ const (
 const (
 	// ModelRouterConfigModelToHeader 模型到头的映射配置键
 	ModelRouterConfigModelToHeader = "modelToHeader"
+
+	// ModelRouterConfigRoutes 路由列表配置键
+	ModelRouterConfigRoutes = "routes"
+
+	// ModelRouterConfigRouteName 路由名称配置键
+	ModelRouterConfigRouteName = "name"
+
+	// ModelRouterConfigRouteDomains 路由域名列表配置键
+	ModelRouterConfigRouteDomains = "domains"
+
+	// ModelRouterConfigRoutePathPredicate 路由路径谓词配置键
+	ModelRouterConfigRoutePathPredicate = "pathPredicate"
+
+	// ModelRouterConfigRouteUpstreams 路由上游列表配置键
+	ModelRouterConfigRouteUpstreams = "upstreams"
 )
 
 // 模型映射插件配置键
