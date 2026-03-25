@@ -260,6 +260,13 @@ func (s *WasmPluginInstanceServiceImpl) AddOrUpdate(ctx context.Context, instanc
 		newCR.Metadata.Name += ".internal"
 	}
 
+	// Set labels for the CR (required for ListWasmPlugins to find it)
+	if newCR.Metadata.Labels == nil {
+		newCR.Metadata.Labels = make(map[string]string)
+	}
+	newCR.Metadata.Labels["higress.io/wasm-plugin-name"] = instance.PluginName
+	newCR.Metadata.Labels["higress.io/wasm-plugin-version"] = version
+
 	// Set spec from plugin
 	if plugin.ImageRepository != "" {
 		newCR.Spec.Url = plugin.ImageRepository
