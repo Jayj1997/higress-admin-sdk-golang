@@ -3,6 +3,7 @@ package service
 
 import (
 	"context"
+	"strings"
 
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/crd/wasm"
@@ -254,6 +255,11 @@ func (s *WasmPluginInstanceServiceImpl) AddOrUpdate(ctx context.Context, instanc
 		newCR.Metadata.Name = instance.PluginName + "-" + version
 	}
 
+	// Add .internal suffix for internal resources
+	if internal {
+		newCR.Metadata.Name += ".internal"
+	}
+
 	// Set spec from plugin
 	if plugin.ImageRepository != "" {
 		newCR.Spec.Url = plugin.ImageRepository
@@ -359,11 +365,11 @@ func (s *WasmPluginInstanceServiceImpl) DeleteAll(ctx context.Context, scope mod
 
 // isInternalWasmPlugin checks if a WasmPlugin is an internal resource
 func isInternalWasmPlugin(plugin *wasm.V1alpha1WasmPlugin) bool {
-	if plugin == nil || plugin.Metadata == nil || plugin.Metadata.Annotations == nil {
+	if plugin == nil || plugin.Metadata == nil {
 		return false
 	}
-	internal, ok := plugin.Metadata.Annotations["higress.io/internal"]
-	return ok && internal == "true"
+	// Check if name ends with ".internal" suffix (Java SDK behavior)
+	return strings.HasSuffix(plugin.Metadata.Name, ".internal")
 }
 
 // MockWasmPluginInstanceService 用于测试的Mock实现
