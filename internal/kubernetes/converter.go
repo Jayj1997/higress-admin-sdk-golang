@@ -636,18 +636,16 @@ func (c *KubernetesModelConverter) GetWasmPluginInstancesFromCR(plugin *wasm.V1a
 	// Handle match rules
 	if len(spec.MatchRules) > 0 {
 		for _, rule := range spec.MatchRules {
-			ruleEnabled := rule.Enable
-
 			// Build targets from match rule
 			targets := make(map[model.WasmPluginInstanceScope]string)
-			if rule.Domain != "" {
-				targets[model.WasmPluginInstanceScopeDomain] = rule.Domain
+			if len(rule.Domain) > 0 {
+				targets[model.WasmPluginInstanceScopeDomain] = rule.Domain[0]
 			}
-			if rule.Ingress != "" {
-				targets[model.WasmPluginInstanceScopeRoute] = rule.Ingress
+			if len(rule.Ingress) > 0 {
+				targets[model.WasmPluginInstanceScopeRoute] = rule.Ingress[0]
 			}
-			if rule.Service != "" {
-				targets[model.WasmPluginInstanceScopeService] = rule.Service
+			if len(rule.Service) > 0 {
+				targets[model.WasmPluginInstanceScopeService] = rule.Service[0]
 			}
 
 			configs, ok := rule.Config.(map[string]interface{})
@@ -655,11 +653,12 @@ func (c *KubernetesModelConverter) GetWasmPluginInstancesFromCR(plugin *wasm.V1a
 				configs = make(map[string]interface{})
 			}
 
+			enabled := !rule.ConfigDisable
 			instance := model.WasmPluginInstance{
 				PluginName:     name,
 				PluginVersion:  version,
 				Targets:        targets,
-				Enabled:        &ruleEnabled,
+				Enabled:        &enabled,
 				Configurations: configs,
 			}
 			instances = append(instances, instance)
@@ -699,18 +698,18 @@ func (c *KubernetesModelConverter) SetWasmPluginInstanceToCR(cr *wasm.V1alpha1Wa
 
 	// Handle other scopes - create or update match rule
 	matchRule := &wasm.MatchRule{
-		Enable: enabled,
-		Config: instance.Configurations,
+		ConfigDisable: !enabled,
+		Config:        instance.Configurations,
 	}
 
 	for scope, target := range instance.Targets {
 		switch scope {
 		case model.WasmPluginInstanceScopeDomain:
-			matchRule.Domain = target
+			matchRule.Domain = []string{target}
 		case model.WasmPluginInstanceScopeRoute:
-			matchRule.Ingress = target
+			matchRule.Ingress = []string{target}
 		case model.WasmPluginInstanceScopeService:
-			matchRule.Service = target
+			matchRule.Service = []string{target}
 		}
 	}
 
@@ -1396,20 +1395,33 @@ func matchRuleKeyEquals(r1, r2 *wasm.MatchRule) bool {
 	}
 
 	// Compare domains
-	if r1.Domain != r2.Domain {
+	if !stringSlicesEqual(r1.Domain, r2.Domain) {
 		return false
 	}
 
 	// Compare ingresses
-	if r1.Ingress != r2.Ingress {
+	if !stringSlicesEqual(r1.Ingress, r2.Ingress) {
 		return false
 	}
 
 	// Compare services
-	if r1.Service != r2.Service {
+	if !stringSlicesEqual(r1.Service, r2.Service) {
 		return false
 	}
 
+	return true
+}
+
+// stringSlicesEqual checks if two string slices are equal.
+func stringSlicesEqual(s1, s2 []string) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+	for i := range s1 {
+		if s1[i] != s2[i] {
+			return false
+		}
+	}
 	return true
 }
 
@@ -1426,12 +1438,12 @@ func sortWasmPluginMatchRules(rules []*wasm.MatchRule) {
 
 // compareMatchRules compares two match rules for sorting.
 func compareMatchRules(r1, r2 *wasm.MatchRule) int {
-	hasDomain1 := r1.Domain != ""
-	hasDomain2 := r2.Domain != ""
-	hasIngress1 := r1.Ingress != ""
-	hasIngress2 := r2.Ingress != ""
-	hasService1 := r1.Service != ""
-	hasService2 := r2.Service != ""
+	hasDomain1 := len(r1.Domain) > 0
+	hasDomain2 := len(r2.Domain) > 0
+	hasIngress1 := len(r1.Ingress) > 0
+	hasIngress2 := len(r2.Ingress) > 0
+	hasService1 := len(r1.Service) > 0
+	hasService2 := len(r2.Service) > 0
 
 	empty1 := !hasDomain1 && !hasIngress1 && !hasService1
 	empty2 := !hasDomain2 && !hasIngress2 && !hasService2
@@ -1455,7 +1467,7 @@ func compareMatchRules(r1, r2 *wasm.MatchRule) int {
 	}
 
 	if hasService1 {
-		return strings.Compare(r1.Service, r2.Service)
+		return strings.Compare(r1.Service[0], r2.Service[0])
 	}
 
 	// Ingress rules come next
@@ -1467,7 +1479,7 @@ func compareMatchRules(r1, r2 *wasm.MatchRule) int {
 	}
 
 	if hasIngress1 {
-		return strings.Compare(r1.Ingress, r2.Ingress)
+		return strings.Compare(r1.Ingress[0], r2.Ingress[0])
 	}
 
 	// Domain rules come last
@@ -1479,7 +1491,7 @@ func compareMatchRules(r1, r2 *wasm.MatchRule) int {
 	}
 
 	if hasDomain1 {
-		return strings.Compare(r1.Domain, r2.Domain)
+		return strings.Compare(r1.Domain[0], r2.Domain[0])
 	}
 
 	return 0

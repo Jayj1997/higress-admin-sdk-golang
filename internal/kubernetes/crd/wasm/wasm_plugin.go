@@ -140,18 +140,16 @@ const (
 
 // MatchRule represents a match rule
 type MatchRule struct {
-	// Domain is the domain to match
-	Domain string `json:"domain,omitempty"`
-	// Ingress is the ingress to match
-	Ingress string `json:"ingress,omitempty"`
-	// Service is the service to match
-	Service string `json:"service,omitempty"`
+	// ConfigDisable indicates if config is disabled
+	ConfigDisable bool `json:"configDisable,omitempty"`
 	// Config is the configuration for this match rule
 	Config interface{} `json:"config,omitempty"`
-	// RawConfig is the raw configuration string
-	RawConfig string `json:"rawConfig,omitempty"`
-	// Enable indicates if this rule is enabled
-	Enable bool `json:"enable,omitempty"`
+	// Domain is the domain list to match
+	Domain []string `json:"domain,omitempty"`
+	// Ingress is the ingress list to match
+	Ingress []string `json:"ingress,omitempty"`
+	// Service is the service list to match
+	Service []string `json:"service,omitempty"`
 }
 
 // PluginInfo represents plugin information
