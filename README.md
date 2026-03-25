@@ -1,22 +1,23 @@
 # Higress Admin SDK for Go
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/Jayj1997/higress-admin-sdk-golang.svg)](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
+[![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)](https://github.com/Jayj1997/higress-admin-sdk-golang/releases)
 
 [English](README_EN.md) | 简体中文
 
 用于管理 Higress 网关配置的 Go SDK，包括域名、路由、服务、证书和 WASM 插件。
 
-> **注意**：该项目移植自 higress-group 官方的 higress-admin-sdk，详情见：[higress-console](https://github.com/higress-group/higress-console) 和 [higress](https://github.com/alibaba/higress)。
+> **版本说明**：该项目移植自 higress-group 官方的 higress-admin-sdk，版本 **v2.2.0** 与 [higress-console 2.2.0](https://github.com/higress-group/higress-console) 对齐。
 
 ## 功能特性
 
 - **域名管理**：创建、更新、删除和列出网关域名
-- **路由管理**：配置路由规则，包括路径匹配、请求头控制等
+- **路由管理**：配置路由规则，包括路径匹配、请求头控制、CORS、重写等
 - **服务管理**：列出和管理后端服务
 - **服务来源管理**：配置服务发现来源（Nacos、DNS、静态等）
 - **TLS 证书管理**：管理 HTTPS 的 SSL/TLS 证书
-- **WASM 插件管理**：配置和管理 WASM 插件
-- **AI 路由管理**：配置 AI/LLM 路由规则
+- **WASM 插件管理**：配置和管理 WASM 插件（40+ 内置插件）
+- **AI 路由管理**：配置 AI/LLM 路由规则（支持 20+ LLM 提供商）
 - **消费者管理**：管理 API 消费者和凭证
 - **MCP 服务器管理**：配置 MCP 服务器实例
 
@@ -38,6 +39,7 @@ import (
 
     sdk "github.com/Jayj1997/higress-admin-sdk-golang"
     "github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
+    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
 )
 
 func main() {
@@ -54,13 +56,13 @@ func main() {
     }
 
     // 列出所有域名
-    domains, err := provider.DomainService().List(context.Background())
+    domains, err := provider.DomainService().List(context.Background(), &model.CommonPageQuery{})
     if err != nil {
         log.Fatalf("列出域名失败: %v", err)
     }
 
-    fmt.Printf("找到 %d 个域名\n", len(domains))
-    for _, domain := range domains {
+    fmt.Printf("找到 %d 个域名\n", domains.Total)
+    for _, domain := range domains.Data {
         fmt.Printf("- %s\n", domain.Name)
     }
 }
@@ -76,13 +78,29 @@ func main() {
 | `WithControllerServiceHost(host)` | 控制器服务主机 | - |
 | `WithControllerServicePort(port)` | 控制器服务端口 | `15014` |
 
+## 文档
+
+- **[使用指南](docs/usage.md)** - 详细的配置说明和服务使用方法
+- **[迁移指南](docs/migration.md)** - Java SDK 到 Go SDK 的迁移说明
+- **[API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)** - GoDoc 生成的 API 参考
+- **[变更日志](CHANGELOG.md)** - 版本变更记录
+
+## 示例代码
+
+| 示例 | 说明 |
+|------|------|
+| [hello-sdk](examples/hello-sdk/) | 基础使用示例 |
+| [route-management](examples/route-management/) | 路由管理示例（CRUD、CORS、请求头控制） |
+| [ai-route](examples/ai-route/) | AI 路由示例（LLM 提供商管理） |
+| [wasm-plugin](examples/wasm-plugin/) | WASM 插件配置示例 |
+
 ## API 参考
 
 ### 域名服务
 
 ```go
 // 列出所有域名
-domains, err := provider.DomainService().List(ctx)
+domains, err := provider.DomainService().List(ctx, &model.CommonPageQuery{})
 
 // 获取特定域名
 domain, err := provider.DomainService().Get(ctx, "example.com")
@@ -116,17 +134,42 @@ route, err := provider.RouteService().Get(ctx, "my-route")
 // 添加新路由
 newRoute := &model.Route{
     Name:    "my-route",
-    Path:    "/api/v1",
     Domains: []string{"example.com"},
+    Path: &route.RoutePredicate{
+        MatchType: route.MatchTypePrefix,
+        Path:      "/api/v1",
+    },
+    Services: []*route.UpstreamService{
+        {Name: "my-service", Namespace: "default", Port: 8080},
+    },
 }
 route, err := provider.RouteService().Add(ctx, newRoute)
 ```
 
-## 文档
+### WASM 插件服务
 
-- [API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
-- [Java SDK 迁移指南](docs/migration.md)
-- [示例代码](examples/)
+```go
+// 列出内置插件
+builtIn := true
+plugins, err := provider.WasmPluginService().List(ctx, &model.WasmPluginPageQuery{
+    BuiltIn: &builtIn,
+})
+
+// 获取插件配置
+config, err := provider.WasmPluginService().GetConfig(ctx, "ai-proxy", "zh-CN")
+
+// 创建插件实例
+instance, err := provider.WasmPluginInstanceService().CreateEmptyInstance(ctx, "ai-proxy")
+instance.Scope = model.WasmPluginInstanceScopeRoute
+instance.Target = "my-route"
+instance.Configurations = map[string]interface{}{
+    "provider": map[string]interface{}{
+        "type":      "openai",
+        "apiTokens": []string{"sk-xxx"},
+    },
+}
+instance, err = provider.WasmPluginInstanceService().AddOrUpdate(ctx, instance)
+```
 
 ## 开发
 
@@ -170,19 +213,26 @@ make lint
 
 ```
 higress-admin-sdk-golang/
-├── api/v1/              # API 定义
+├── CHANGELOG.md           # 变更日志
+├── docs/
+│   ├── usage.md           # 使用指南
+│   └── migration.md       # 迁移指南
+├── examples/
+│   ├── hello-sdk/         # 基础示例
+│   ├── route-management/  # 路由管理示例
+│   ├── ai-route/          # AI 路由示例
+│   └── wasm-plugin/       # WASM 插件示例
 ├── pkg/
-│   ├── client/          # 客户端实现
-│   ├── config/          # 配置
-│   ├── model/           # 数据模型
-│   ├── service/         # 服务实现
-│   ├── constant/        # 常量定义
-│   └── errors/          # 错误定义
+│   ├── client/            # 客户端实现
+│   ├── config/            # 配置
+│   ├── model/             # 数据模型
+│   ├── service/           # 服务实现
+│   ├── constant/          # 常量定义
+│   └── errors/            # 错误定义
 ├── internal/
-│   ├── kubernetes/      # Kubernetes 客户端和 CRD
-│   └── util/            # 内部工具
-├── examples/            # 示例代码
-└── test/                # 集成测试
+│   ├── kubernetes/        # Kubernetes 客户端和 CRD
+│   └── resources/         # 内置资源（WASM 插件配置）
+└── test/                  # 集成测试
 ```
 
 ## 贡献

@@ -1,3 +1,9 @@
 ported-schedule.md
 plans/
 coverage-all.out
+route-management
+!route-management/
+wasm-plugin
+!wasm-plugin/
+ai-route
+!ai-route/
