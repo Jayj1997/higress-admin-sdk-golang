@@ -12,6 +12,9 @@ type Service struct {
 	// Port is the service port (for single port services).
 	Port int `json:"port,omitempty"`
 
+	// Protocol is the service protocol (e.g., HTTP, TCP).
+	Protocol string `json:"protocol,omitempty"`
+
 	// Ports are the service ports.
 	Ports []ServicePort `json:"ports,omitempty"`
 

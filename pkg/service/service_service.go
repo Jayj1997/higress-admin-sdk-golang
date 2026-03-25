@@ -3,14 +3,19 @@ package service
 
 import (
 	"context"
+	"log"
 	"sort"
 	"strings"
 
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
 	k8smodel "github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
 	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
+
+// showMcpServicePorts controls whether to show ports for MCP services
+const showMcpServicePorts = true
 
 // ServiceService 服务管理服务接口
 type ServiceService interface {
@@ -75,7 +80,8 @@ func (s *ServiceServiceImpl) List(ctx context.Context, query *model.CommonPageQu
 		}
 
 		// 处理端口
-		if len(registryzService.Ports) == 0 {
+		// DIFF-014: 添加MCP服务端口显示控制，与Java版本保持一致
+		if len(registryzService.Ports) == 0 || (!showMcpServicePorts && constant.MCPNamespace == namespace) {
 			service := model.Service{
 				Name:      name,
 				Namespace: namespace,
@@ -83,12 +89,21 @@ func (s *ServiceServiceImpl) List(ctx context.Context, query *model.CommonPageQu
 			}
 			services = append(services, service)
 		} else {
-			// 为每个端口创建服务实例
+			// DIFF-018: 添加重复端口检查，与Java版本保持一致
+			seenPorts := make(map[uint32]bool)
 			for _, port := range registryzService.Ports {
+				if seenPorts[port.Port] {
+					log.Printf("WARN: Duplicate port found in service %s/%s: %d", namespace, name, port.Port)
+					continue
+				}
+				seenPorts[port.Port] = true
+
+				// DIFF-017: 添加Protocol字段设置，与Java版本保持一致
 				service := model.Service{
 					Name:      name,
 					Namespace: namespace,
 					Port:      int(port.Port),
+					Protocol:  port.Protocol,
 					Endpoints: endpoints,
 				}
 				services = append(services, service)
@@ -161,23 +176,27 @@ func (s *ServiceServiceImpl) getServiceEndpoints(
 }
 
 // getMcpBridgeDnsDomain 获取MCP Bridge DNS域名映射
+// DIFF-015: 修改为获取所有McpBridge，与Java版本保持一致
 func (s *ServiceServiceImpl) getMcpBridgeDnsDomain(ctx context.Context) map[string]string {
 	domainMap := make(map[string]string)
 
-	// 获取McpBridge
-	mcpBridge, err := s.kubernetesClient.GetMcpBridge(ctx, "default")
-	if err != nil || mcpBridge == nil {
+	// 获取所有McpBridge
+	mcpBridges, err := s.kubernetesClient.ListMcpBridges(ctx)
+	if err != nil || len(mcpBridges) == 0 {
 		return domainMap
 	}
 
-	if mcpBridge.Spec == nil || len(mcpBridge.Spec.Registries) == 0 {
-		return domainMap
-	}
-
-	// 提取域名映射
-	for _, registry := range mcpBridge.Spec.Registries {
-		if registry.Name != "" && registry.Domain != "" {
-			domainMap[registry.Name] = registry.Domain
+	// 遍历所有McpBridge提取域名映射
+	for _, mcpBridge := range mcpBridges {
+		if mcpBridge == nil || mcpBridge.Spec == nil {
+			continue
+		}
+		for _, registry := range mcpBridge.Spec.Registries {
+			if registry.Name != "" && registry.Domain != "" {
+				// 使用 name.type 作为键，与Java版本保持一致
+				key := registry.Name + "." + registry.Type
+				domainMap[key] = registry.Domain
+			}
 		}
 	}
 
@@ -185,6 +204,7 @@ func (s *ServiceServiceImpl) getMcpBridgeDnsDomain(ctx context.Context) map[stri
 }
 
 // completeMcpDnsEndpoints 补充MCP DNS端点
+// DIFF-015: 修改匹配逻辑，与Java版本保持一致
 func (s *ServiceServiceImpl) completeMcpDnsEndpoints(
 	registryzService *k8smodel.RegistryzService,
 	mcpBridgeDomain map[string]string,

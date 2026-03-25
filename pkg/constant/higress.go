@@ -111,6 +111,12 @@ const (
 	StaticPort = 0
 )
 
+// MCP namespace constant.
+const (
+	// MCPNamespace is the namespace for MCP services.
+	MCPNamespace = "mcp"
+)
+
 // LLM Provider constants.
 const (
 	// LlmServiceNamePrefix LLM服务名称前缀

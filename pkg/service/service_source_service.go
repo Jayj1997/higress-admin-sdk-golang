@@ -30,6 +30,10 @@ type ServiceSourceService interface {
 	// Update 更新服务来源
 	Update(ctx context.Context, source *model.ServiceSource) (*model.ServiceSource, error)
 
+	// AddOrUpdate 添加或更新服务来源
+	// DIFF-019: 添加AddOrUpdate方法，与Java版本保持一致
+	AddOrUpdate(ctx context.Context, source *model.ServiceSource) (*model.ServiceSource, error)
+
 	// Delete 删除服务来源
 	Delete(ctx context.Context, name string) error
 }
@@ -231,6 +235,54 @@ func (s *ServiceSourceServiceImpl) Delete(ctx context.Context, name string) erro
 	}
 
 	return nil
+}
+
+// AddOrUpdate 添加或更新服务来源
+// DIFF-019: 添加AddOrUpdate方法，与Java版本保持一致
+func (s *ServiceSourceServiceImpl) AddOrUpdate(ctx context.Context, source *model.ServiceSource) (*model.ServiceSource, error) {
+	mcpBridge, err := s.kubernetesClient.GetMcpBridge(ctx, DefaultMcpBridgeName)
+	if err != nil {
+		return nil, errors.NewBusinessError("Error occurs when getting McpBridge: " + err.Error())
+	}
+
+	if mcpBridge == nil {
+		// 创建新的McpBridge
+		mcpBridge = mcp.NewV1McpBridge()
+		mcpBridge.Metadata.Name = DefaultMcpBridgeName
+	}
+
+	// 查找是否已存在
+	found := false
+	for i, registry := range mcpBridge.Spec.Registries {
+		if registry.Name == source.Name {
+			// 更新已存在的registry
+			mcpBridge.Spec.Registries[i] = s.convertServiceSourceToRegistry(source)
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		// 添加新的registry
+		registry := s.convertServiceSourceToRegistry(source)
+		mcpBridge.Spec.Registries = append(mcpBridge.Spec.Registries, registry)
+	}
+
+	// 保存
+	if mcpBridge.Metadata.ResourceVersion == "" {
+		_, err = s.kubernetesClient.CreateMcpBridge(ctx, mcpBridge)
+	} else {
+		_, err = s.kubernetesClient.UpdateMcpBridge(ctx, mcpBridge)
+	}
+
+	if err != nil {
+		if strings.Contains(err.Error(), "409") || strings.Contains(err.Error(), "Conflict") {
+			return nil, errors.NewResourceConflictError("ServiceSource", source.Name)
+		}
+		return nil, errors.NewBusinessError("Error occurs when adding or updating ServiceSource: " + err.Error())
+	}
+
+	return source, nil
 }
 
 // convertRegistryToServiceSource 将V1RegistryConfig转换为ServiceSource
