@@ -1,8 +1,9 @@
-module github.com/Jayj1997/higress-admin-sdk-golang
+module github.com/Jayj1997/higress-admin-sdk-golang/v2
 
 go 1.21
 
 require (
+	github.com/Jayj1997/higress-admin-sdk-golang v0.0.0-20260325025458-8be7974613c0
 	github.com/json-iterator/go v1.1.12
 	github.com/stretchr/testify v1.8.4
 	gopkg.in/yaml.v3 v3.0.1
