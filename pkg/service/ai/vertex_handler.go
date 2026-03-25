@@ -2,7 +2,7 @@
 package ai
 
 import (
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // VertexLlmProviderHandler GCP Vertex AI提供商处理器

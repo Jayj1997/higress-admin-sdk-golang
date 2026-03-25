@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes/crd/istio"
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes/crd/mcp"
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes/crd/wasm"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/crd/istio"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/crd/mcp"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/crd/wasm"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

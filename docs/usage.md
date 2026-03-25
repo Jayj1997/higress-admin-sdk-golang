@@ -18,7 +18,7 @@
 ### 安装
 
 ```bash
-go get github.com/Jayj1997/higress-admin-sdk-golang
+go get github.com/Jayj1997/higress-admin-sdk-golang/v2
 ```
 
 ### 基本使用
@@ -31,8 +31,8 @@ import (
     "fmt"
     "log"
 
-    sdk "github.com/Jayj1997/higress-admin-sdk-golang"
-    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
+    sdk "github.com/Jayj1997/higress-admin-sdk-golang/v2"
+    "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
 )
 
 func main() {
@@ -482,7 +482,7 @@ server, err = provider.McpServerService().Add(ctx, dbServer)
 SDK 定义了以下错误类型：
 
 ```go
-import "github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
+import "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
 
 // 业务错误
 var ErrBusiness = errors.NewBusinessError("操作失败")
@@ -626,7 +626,7 @@ cfg := config.NewHigressServiceConfig(
 
 ## 相关链接
 
-- [API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
+- [API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang/v2)
 - [迁移指南](migration.md)
 - [示例代码](../examples/)
 - [Higress 官方文档](https://higress.io/zh-cn/docs/latest/overview/what-is-higress)

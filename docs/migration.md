@@ -37,7 +37,7 @@ higress-admin-sdk-golang 是 higress-admin-sdk Java 版本的 Go 移植版本，
 ```
 Java                                    Go
 ---                                     ---
-com.alibaba.higress.sdk               → github.com/Jayj1997/higress-admin-sdk-golang
+com.alibaba.higress.sdk               → github.com/Jayj1997/higress-admin-sdk-golang/v2
 
 ├── config                             → pkg/config
 │   └── HigressServiceConfig           → HigressServiceConfig
@@ -105,8 +105,8 @@ HigressServiceProvider provider = HigressServiceProvider.create(config);
 
 ```go
 import (
-    sdk "github.com/Jayj1997/higress-admin-sdk-golang"
-    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
+    sdk "github.com/Jayj1997/higress-admin-sdk-golang/v2"
+    "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
 )
 
 cfg := config.NewHigressServiceConfig(
@@ -355,7 +355,7 @@ try {
 ### Go 错误处理
 
 ```go
-import "github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
+import "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
 
 domain, err := provider.DomainService().Get(ctx, "nonexistent.com")
 if err != nil {
@@ -432,6 +432,6 @@ go func() {
 ## 相关链接
 
 - [使用指南](usage.md)
-- [API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
+- [API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang/v2)
 - [示例代码](../examples/)
 - [Higress 官方文档](https://higress.io/zh-cn/docs/latest/overview/what-is-higress)

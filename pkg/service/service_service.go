@@ -6,10 +6,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
-	k8smodel "github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
+	k8smodel "github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // ServiceService 服务管理服务接口

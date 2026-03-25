@@ -5,10 +5,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 	corev1 "k8s.io/api/core/v1"
 )
 

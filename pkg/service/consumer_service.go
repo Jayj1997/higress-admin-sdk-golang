@@ -4,7 +4,7 @@ package service
 import (
 	"context"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // ConsumerService 消费者管理服务接口

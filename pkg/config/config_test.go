@@ -4,7 +4,7 @@ package config
 import (
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
 	"github.com/stretchr/testify/assert"
 )
 

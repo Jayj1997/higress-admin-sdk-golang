@@ -3,7 +3,7 @@ package consumer
 import (
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // Key Auth配置常量

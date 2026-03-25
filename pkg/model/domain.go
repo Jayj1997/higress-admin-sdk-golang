@@ -1,7 +1,7 @@
 // Package model provides data models for Higress Admin SDK.
 package model
 
-import "github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
+import "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
 
 // EnableHTTPS constants for domain HTTPS configuration.
 const (

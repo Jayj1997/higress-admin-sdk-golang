@@ -8,11 +8,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/resources/plugins"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/resources/plugins"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 	"gopkg.in/yaml.v3"
 )
 

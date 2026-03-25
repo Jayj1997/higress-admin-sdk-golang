@@ -4,9 +4,9 @@ import (
 	"context"
 	"sort"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/consumer"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/consumer"
 )
 
 // 默认凭证类型列表

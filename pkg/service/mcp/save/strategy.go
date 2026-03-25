@@ -4,7 +4,7 @@ package save
 import (
 	"context"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // McpServerSaveStrategy MCP服务器保存策略接口

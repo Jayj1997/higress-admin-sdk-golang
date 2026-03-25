@@ -4,8 +4,8 @@ package mock
 import (
 	"context"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service"
 )
 
 // MockAiRouteService AiRouteService的Mock实现

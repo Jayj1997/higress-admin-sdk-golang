@@ -6,11 +6,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
-	sdkerrors "github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model/route"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/mcp"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
+	sdkerrors "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model/route"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mcp"
 )
 
 // RouteServiceInterface 路由服务接口

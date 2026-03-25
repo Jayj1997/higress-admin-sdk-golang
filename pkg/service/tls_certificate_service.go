@@ -5,9 +5,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // TlsCertificateService TLS证书管理服务接口

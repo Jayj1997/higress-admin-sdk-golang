@@ -4,7 +4,7 @@ package detail
 import (
 	"context"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 // McpServerDetailStrategy MCP服务器详情策略接口

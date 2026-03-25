@@ -5,8 +5,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

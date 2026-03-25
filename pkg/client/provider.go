@@ -2,10 +2,10 @@
 package client
 
 import (
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/mock"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mock"
 )
 
 // HigressServiceProvider 是Higress服务提供者的主接口

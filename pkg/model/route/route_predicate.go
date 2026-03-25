@@ -2,7 +2,7 @@
 package route
 
 import (
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
 )
 
 // MatchType constants for route predicates.

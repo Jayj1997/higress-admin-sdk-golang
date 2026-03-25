@@ -1,7 +1,7 @@
 # Higress Admin SDK for Go
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/Jayj1997/higress-admin-sdk-golang.svg)](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
-[![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)](https://github.com/Jayj1997/higress-admin-sdk-golang/releases)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Jayj1997/higress-admin-sdk-golang/v2.svg)](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang/v2)
+[![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)](https://github.com/Jayj1997/higress-admin-sdk-golang/v2/releases)
 
 English | [简体中文](README.md)
 
@@ -24,7 +24,7 @@ A Go SDK for managing Higress gateway configurations, including domains, routes,
 ## Installation
 
 ```bash
-go get github.com/Jayj1997/higress-admin-sdk-golang
+go get github.com/Jayj1997/higress-admin-sdk-golang/v2
 ```
 
 ## Quick Start
@@ -37,9 +37,9 @@ import (
     "fmt"
     "log"
 
-    sdk "github.com/Jayj1997/higress-admin-sdk-golang"
-    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
-    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+    sdk "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/client"
+    "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
+    "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 func main() {
@@ -82,7 +82,7 @@ func main() {
 
 - **[Usage Guide](docs/usage.md)** - Detailed configuration and service usage
 - **[Migration Guide](docs/migration.md)** - Migration from Java SDK to Go SDK
-- **[API Documentation](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)** - GoDoc generated API reference
+- **[API Documentation](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang/v2)** - GoDoc generated API reference
 - **[Changelog](CHANGELOG.md)** - Version history
 
 ## Examples

@@ -4,9 +4,9 @@ package mcp
 import (
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model/route"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model/route"
 )
 
 const (

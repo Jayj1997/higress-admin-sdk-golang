@@ -1,7 +1,7 @@
 // Package config provides configuration for Higress Admin SDK.
 package config
 
-import "github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
+import "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
 
 // HigressServiceConfig is the configuration for Higress service provider.
 type HigressServiceConfig struct {

@@ -4,10 +4,10 @@ package kubernetes
 import (
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes/crd/wasm"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/constant"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model/route"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes/crd/wasm"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/constant"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model/route"
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

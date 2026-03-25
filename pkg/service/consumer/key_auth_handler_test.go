@@ -4,7 +4,7 @@ package consumer
 import (
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 	"github.com/stretchr/testify/assert"
 )
 

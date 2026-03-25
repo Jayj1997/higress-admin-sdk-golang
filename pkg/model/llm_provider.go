@@ -4,7 +4,7 @@ package model
 import (
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
 )
 
 // LlmProvider LLM服务提供商

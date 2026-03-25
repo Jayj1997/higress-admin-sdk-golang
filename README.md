@@ -1,7 +1,7 @@
 # Higress Admin SDK for Go
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/Jayj1997/higress-admin-sdk-golang.svg)](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)
-[![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)](https://github.com/Jayj1997/higress-admin-sdk-golang/releases)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Jayj1997/higress-admin-sdk-golang/v2.svg)](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang/v2)
+[![Version](https://img.shields.io/badge/version-v2.2.0-blue.svg)](https://github.com/Jayj1997/higress-admin-sdk-golang/v2/releases)
 
 [English](README_EN.md) | 简体中文
 
@@ -24,7 +24,7 @@
 ## 安装
 
 ```bash
-go get github.com/Jayj1997/higress-admin-sdk-golang
+go get github.com/Jayj1997/higress-admin-sdk-golang/v2
 ```
 
 ## 快速开始
@@ -37,9 +37,9 @@ import (
     "fmt"
     "log"
 
-    sdk "github.com/Jayj1997/higress-admin-sdk-golang"
-    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/config"
-    "github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+    sdk "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/client"
+    "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/config"
+    "github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 )
 
 func main() {
@@ -82,7 +82,7 @@ func main() {
 
 - **[使用指南](docs/usage.md)** - 详细的配置说明和服务使用方法
 - **[迁移指南](docs/migration.md)** - Java SDK 到 Go SDK 的迁移说明
-- **[API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang)** - GoDoc 生成的 API 参考
+- **[API 文档](https://pkg.go.dev/github.com/Jayj1997/higress-admin-sdk-golang/v2)** - GoDoc 生成的 API 参考
 - **[变更日志](CHANGELOG.md)** - 版本变更记录
 
 ## 示例代码

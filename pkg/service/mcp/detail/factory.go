@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/mcp"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mcp"
 )
 
 // AbstractMcpServerDetailStrategy 抽象详情策略

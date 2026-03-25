@@ -4,7 +4,7 @@ package model
 import (
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model/route"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model/route"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

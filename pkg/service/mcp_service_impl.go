@@ -6,11 +6,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/errors"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/mcp"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/mcp/detail"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/service/mcp/save"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/errors"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mcp"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mcp/detail"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/service/mcp/save"
 )
 
 // McpKubernetesClientInterface MCP服务Kubernetes客户端接口

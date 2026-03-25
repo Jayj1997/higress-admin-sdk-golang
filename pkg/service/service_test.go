@@ -4,8 +4,8 @@ package service
 import (
 	"testing"
 
-	"github.com/Jayj1997/higress-admin-sdk-golang/internal/kubernetes"
-	"github.com/Jayj1997/higress-admin-sdk-golang/pkg/model"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/internal/kubernetes"
+	"github.com/Jayj1997/higress-admin-sdk-golang/v2/pkg/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
